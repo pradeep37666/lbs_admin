@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+	box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+/* CHANGE_BOILER */
+@layer components {
+	.btn-primary {
+		@apply bg-white-base border-[2px] border-white-base px-[1.5rem] py-2 rounded-[8px] text-black-base mb-1 text-[20px] transition-all w-fit flex gap-2 justify-center cursor-pointer hover:scale-[1.03] duration-300 hover:bg-white-base hover:border-white-base hover:shadow-lg;
+	}
+
+	.input-primary {
+		@apply bg-white-base border-[1px] border-white-base text-black-base px-3 py-3 rounded-lg mb-1 w-fit outline-none focus:border-black-base focus:shadow-md transition-all duration-300;
+	}
+}
+
+/* CHANGE_BOILER */
+
+body {
+	margin: 0;
+	font-size: 18px;
+	font-family: 'Archivo', sans-serif;
+}
+
+a {
+	text-decoration: none;
+}
+
+button {
+	outline: none;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 10px;
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background: #c2c9d2;
+}
