@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,23 +12,32 @@ html {
 	box-sizing: inherit;
 }
 
-/* CHANGE_BOILER */
 @layer components {
 	.btn-primary {
-		@apply bg-white-base border-[2px] border-white-base px-[1.5rem] py-2 rounded-[8px] text-black-base mb-1 text-[20px] transition-all w-fit flex gap-2 justify-center cursor-pointer hover:scale-[1.03] duration-300 hover:bg-white-base hover:border-white-base hover:shadow-lg;
-	}
-
-	.input-primary {
-		@apply bg-white-base border-[1px] border-white-base text-black-base px-3 py-3 rounded-lg mb-1 w-fit outline-none focus:border-black-base focus:shadow-md transition-all duration-300;
-	}
+		@apply bg-red-base text-white text-[15px] rounded-[10px] p-4 w-full mb-1 transition-all flex gap-2 justify-center cursor-pointer hover:scale-105 duration-300 hover:bg-red-base hover:shadow-lg;
+	  }
+	
+	  .input-primary {
+		@apply border-[1px] border-red-base font-medium text-black p-3 rounded-lg mb-1 w-full outline-none focus:border-red-dark focus:shadow-md transition-all duration-300;
+	  }
+	
+	  .search-primary {
+		@apply font-medium pl-10 text-[14px] bg-grey-light text-black p-3 rounded-md mb-1 w-full outline-none focus:shadow-md transition-all duration-300;
+	  }
+	
+	  .sidebar-text {
+		@apply relative z-20 cursor-pointer text-blue-dark
+	  }
+	
+	  .sidebar-hover-bg {
+		@apply hover:before:w-full hover:before:px-2 before:-z-10 before:absolute before:content-[''] before:left-[-10px] before:rounded-lg before:w-0 before:h-full before:bg-red-light before:before:-z-10 before:transition-all before:duration-[0.4s]
+	  }
 }
-
-/* CHANGE_BOILER */
 
 body {
 	margin: 0;
 	font-size: 18px;
-	font-family: 'Archivo', sans-serif;
+	font-family: 'DM Sans', sans-serif;
 }
 
 a {

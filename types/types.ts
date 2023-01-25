@@ -18,6 +18,7 @@ export type Snack = {
 export interface IconBaseProps {
 	onClick?: () => void
 	className?: string
+	color?: string
 }
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

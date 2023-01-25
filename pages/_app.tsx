@@ -23,8 +23,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 		<QueryClientProvider client={queryClient}>
 			<div className=''>
 				<Head>
-					{/* CHANGE_BOILER */}
-					<title>Moonward Application</title>
+					<title>LBS Admin</title>
 					<meta name='viewport' content='initial-scale=1.0, width=device-width' />
 					<link rel='shortcut icon' href='/favicon.ico' />
 				</Head>

@@ -9,23 +9,29 @@ module.exports = {
 	theme: {
 		extend: {
 			backgroundImage: {
-				// 'footer-card-image': "url('../assets/images/footer-card-image.png')",
+				'nav-bg': "url('./assets/images/nav-bg.png')",
 			},
 			fontFamily: {
-				// axiforma: ['Axiforma', 'sans-serif']
+				dmSans: ['DM Sans', 'sans-serif'],
 			},
 			colors: {
-				white: {
-					base: '#FFF',
+				white: '#FFF',
+				black: '#000',
+				blue: {
+					dark: '#33384F',
 				},
-				black: {
-					base: '#000',
+				red: {
+					light: '#de4056',
+					base: '#AC172C',
+					dark: '#7d0214',
 				},
-				success: {
-					base: '#16A34A',
-				},
-				error: {
-					base: '#E33B45',
+				grey: {
+					base: '#B4B4B4',
+					light: '#F5F5F5',
+					dark: '#797979',
+					border: '#C7C7C7',
+					placeholder: '#BCBCBC',
+					text: '#ADADAD',
 				},
 			},
 		},

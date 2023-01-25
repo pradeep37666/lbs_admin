@@ -3,7 +3,7 @@ import { ReactElement } from 'react'
 import { NextPageWithLayout } from '../types/types'
 
 const Home: NextPageWithLayout = () => {
-	return <div className='text-white-base text-[48px]'>Moonward Next</div>
+	return <div className='text-white-base text-[48px]'></div>
 }
 
 Home.getLayout = function getLayout(page: ReactElement) {
