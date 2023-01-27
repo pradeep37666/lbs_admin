@@ -14,13 +14,13 @@ import { useAtom } from 'jotai'
 import { snackAtom } from '../stores/atoms'
 
 type Props = {
-	item: Item | undefined
+	item: Item
 }
 
 function ItemOverview({ item }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 
-	if (!item) return <div />
+	// if (!item) return <div />
 
 	const user = useQuery(['singleUser', item], () => UserService.getOne(item.userId), {
 		onError: (err) => errorPopupParser(err, setSnack),

@@ -14,7 +14,7 @@ function Items() {
 
 			<div className='w-full h-[calc(100%_-_65px)] flex gap-4'>
 				<ItemList setActiveItem={setActiveItem} activeItem={activeItem} />
-				<ItemOverview item={activeItem} />
+				{activeItem && <ItemOverview item={activeItem} />}
 			</div>
 		</div>
 	)
