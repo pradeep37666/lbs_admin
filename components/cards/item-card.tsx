@@ -13,7 +13,7 @@ type Props = {
 function ItemCard({ item, isActive, setActiveItem }: Props) {
 	const getItemImage = () => {
 		if (item.images[0]?.imageKey) return getImage(item.images[0]?.imageKey)
-		else return ItemPlaceholder
+		else return ItemPlaceholder.src
 	}
 
 	return (
@@ -25,7 +25,7 @@ function ItemCard({ item, isActive, setActiveItem }: Props) {
 				onClick={() => setActiveItem(item)}
 			>
 				<div className='flex items-center gap-3'>
-					<img src={getItemImage().toString()} className='rounded-sm w-[60px] h-[60px]' />
+					<img src={getItemImage()} className='rounded-sm w-[60px] h-[60px]' />
 
 					<div>
 						<p className='font-bold text-[16px] '>{item.title}</p>

@@ -66,15 +66,14 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 	}
 
 	const loadMoreItems = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-		if (!lazyItems.data) return
+		const hasHitBottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop <= e.currentTarget.clientHeight + 200
+		if (!lazyItems.data || !hasHitBottom) return
 
 		const { items, numItems } = getAllItems(lazyItems.data.pages)
 
 		if (lazyItems.isFetching || items.length >= numItems) return
-		const hasHitBottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop <= e.currentTarget.clientHeight + 200
-		if (hasHitBottom) {
-			lazyItems.fetchNextPage()
-		}
+
+		if (hasHitBottom) lazyItems.fetchNextPage()
 	}
 
 	const renderItems = () => {
