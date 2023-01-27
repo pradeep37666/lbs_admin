@@ -33,7 +33,7 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 	const debouncedKeyword = useDebounce(keyword, 600)
 
 	const lazyItems = useInfiniteQuery(
-		['items'],
+		['items', debouncedKeyword],
 		({ pageParam = 0 }) => ItemsService.search(debouncedKeyword, pageParam, NUM_ITEMS_PER_SEARCH),
 		{
 			getNextPageParam: (lastPage, allPages) => {
