@@ -1,18 +1,18 @@
 import axios from 'axios'
 
 const Instance = axios.create({
-    baseURL: 'https://pokeapi.co/api/v2/',
-    timeout: 12000,
+	baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+	timeout: 12000,
 })
 
 Instance.interceptors.request.use(async (req) => {
-    const token = localStorage.getItem('CHANGE_BOILER')
-    
-    if (!token || !req.headers) return req
+	const token = localStorage.getItem('LBS_Admin_Token')
 
-    req.headers.Authorization = `Bearer ${token}`
-    
-    return req
+	if (!token || !req.headers) return req
+
+	req.headers.Authorization = `Bearer ${token}`
+
+	return req
 })
 
 export default Instance

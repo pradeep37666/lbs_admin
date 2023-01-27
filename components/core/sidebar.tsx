@@ -12,8 +12,6 @@ function Sidebar() {
 
 	const currentRoute = router.pathname
 
-	console.log(currentRoute)
-
 	const isItems = currentRoute === '/items'
 	const isNoticeBoard = currentRoute === '/support' || currentRoute === '/disputes'
 	const isSupport = currentRoute === '/support'

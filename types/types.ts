@@ -24,3 +24,8 @@ export interface IconBaseProps {
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 	getLayout?: (page: ReactElement) => ReactNode
 }
+
+export type Tab = {
+	name: string
+	value: string
+}
