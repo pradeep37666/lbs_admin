@@ -40,6 +40,10 @@ body {
 	font-family: 'DM Sans', sans-serif;
 }
 
+.hide-scroll::-webkit-scrollbar {
+	display: none;
+}
+
 a {
 	text-decoration: none;
 }

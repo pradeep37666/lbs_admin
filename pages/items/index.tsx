@@ -2,6 +2,7 @@ import Head from 'next/head'
 import React, { ReactElement, useState } from 'react'
 import PageWrapper from '../../components/core/page-wrapper'
 import ItemList from '../../components/item-list'
+import ItemOverview from '../../components/item-overview'
 import { Item } from '../../types/items'
 
 function Items() {
@@ -13,7 +14,7 @@ function Items() {
 
 			<div className='w-full h-[calc(100%_-_65px)] flex gap-4'>
 				<ItemList setActiveItem={setActiveItem} activeItem={activeItem} />
-				{/* <ItemOverview item={activeItem}/> */}
+				<ItemOverview item={activeItem} />
 			</div>
 		</div>
 	)
