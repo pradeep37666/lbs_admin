@@ -2,19 +2,19 @@ import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { ReactNode, useEffect, useState } from 'react'
 import AuthService from '../../services/auth'
-import { userAtom } from '../../stores/atoms'
-import { User } from '../../types/types'
+import { adminAtom } from '../../stores/atoms'
+import { Admin, User } from '../../types/types'
 import Loading from './loading'
 
 type Props = {
 	children: ReactNode[]
 }
 
-const authRoutes = ['/example-auth-route']
-const notAuthRoutes = ['/login', '/register']
+const authRoutes = ['/blogs']
+const notAuthRoutes = ['/login']
 
 function AuthProvider({ children }: Props) {
-	const [, setUser] = useAtom(userAtom)
+	const [, setAdmin] = useAtom(adminAtom)
 	const [isLoadingUser, setIsLoadingUser] = useState(true)
 	// const [token, setToken] = useState<string | null>(null)
 	const router = useRouter()
@@ -23,41 +23,41 @@ function AuthProvider({ children }: Props) {
 	//     retry: 1,
 	//     enabled: !!token,
 	//     onSuccess: (data) => {
-	//         setUser(data)
+	//         setAdmin(data)
 	//     }
 	// })
 
-	const getUserData = async (): Promise<User | undefined> => {
+	const getAdminData = async (): Promise<Admin | undefined> => {
 		try {
-			const [userData] = await Promise.all([
+			const [adminData] = await Promise.all([
 				AuthService.getMe(),
 				// asyncTimeout(2000)
 			])
 
-			setUser(userData)
+			setAdmin(adminData.user)
 
-			return userData
+			return adminData.user
 		} catch (error) {
-			setUser(undefined)
-			localStorage.removeItem('CompetibleToken')
+			setAdmin(undefined)
+			localStorage.removeItem('LBS_Admin_Token')
 		}
 	}
 
 	const handleProtectRoutes = async () => {
-		const token = localStorage.getItem('CompetibleToken')
+		const token = localStorage.getItem('LBS_Admin_Token')
 
 		const isAuthRoute = authRoutes.includes(router.route)
 		const isNotAuthRoute = notAuthRoutes.includes(router.route)
 
 		if (!token) {
 			setIsLoadingUser(false)
-			setUser(undefined)
+			setAdmin(undefined)
 			if (isAuthRoute) router.replace('/login')
 			return
 		}
-		const businessUser = await getUserData()
+		const admin = await getAdminData()
 
-		if (isNotAuthRoute && businessUser) router.replace('/')
+		if (isNotAuthRoute && admin) router.replace('/')
 
 		setIsLoadingUser(false)
 	}

@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import { Snack, User } from '../types/types'
+import { Admin, Snack } from '../types/types'
 
 const defaultSnack: Snack = {
 	isOpen: false,
@@ -9,4 +9,4 @@ const defaultSnack: Snack = {
 
 export const snackAtom = atom<Snack>(defaultSnack)
 
-export const userAtom = atom<User | undefined>(undefined)
+export const adminAtom = atom<Admin | undefined>(undefined)

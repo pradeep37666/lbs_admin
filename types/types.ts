@@ -10,6 +10,17 @@ export type User = {
 	id: string
 }
 
+export type Admin = {
+	avatar: string
+	createdAt: string
+	customerId: string | null
+	email: string
+	firstName: string
+	id: string
+	lastName: string
+	role: 'ADMIN'
+}
+
 export type Snack = {
 	isOpen: boolean
 	severity: 'success' | 'error'

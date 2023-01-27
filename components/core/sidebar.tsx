@@ -1,3 +1,4 @@
+import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React from 'react'
 import BlogsIcon from '../../assets/icons/blogs'
@@ -6,9 +7,11 @@ import LogoutIcon from '../../assets/icons/logout'
 import NoticeBoardIcon from '../../assets/icons/notice-board'
 import UsersIcon from '../../assets/icons/users'
 import LogoRed from '../../assets/logos/logo-red'
+import { adminAtom } from '../../stores/atoms'
 
 function Sidebar() {
 	const router = useRouter()
+	const [, setAdmin] = useAtom(adminAtom)
 
 	const currentRoute = router.pathname
 
@@ -18,6 +21,12 @@ function Sidebar() {
 	const isDisputes = currentRoute === '/disputes'
 	const isBlogs = currentRoute === '/blogs'
 	const isUsers = currentRoute === '/users'
+
+	const logoutAdmin = () => {
+		localStorage.removeItem('LBS_Admin_Token')
+		setAdmin(undefined)
+		router.push('/login')
+	}
 
 	return (
 		<div className='h-screen w-[240px] bg-nav-bg bg-no-repeat bg-cover p-8 select-none flex flex-col'>
@@ -87,7 +96,10 @@ function Sidebar() {
 				<p>Users</p>
 			</div>
 
-			<div className='mt-auto flex gap-2 items-center cursor-pointer font-bold text-[20px] text-blue-dark hover:scale-105 transition-all duration-300 '>
+			<div
+				className='mt-auto flex gap-2 items-center cursor-pointer font-bold text-[20px] text-blue-dark hover:scale-105 transition-all duration-300 '
+				onClick={logoutAdmin}
+			>
 				<LogoutIcon />
 				<p>Logout</p>
 			</div>
