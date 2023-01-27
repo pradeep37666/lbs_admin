@@ -1,30 +1,32 @@
-import { User } from '../types/types'
+import axios from 'axios'
+import Instance from '../utils/axios'
+
+const networkErrorMessage = 'There was an error with your connection, please try again'
+
+type LoginProps = {
+	email: string
+	password: string
+}
 
 namespace AuthService {
-	export const createOne = async (): Promise<User> => {
-		// register a user
-		throw Error('Not Implemented')
-	}
+	export const login = async ({ email, password }: LoginProps): Promise<any> => {
+		try {
+			const result = await Instance.post(`auth/admin/signIn`, {
+				email,
+				password,
+			})
 
-	export const getOne = async (): Promise<User> => {
-		// get a user's details
-		throw Error('Not Implemented')
-	}
+			console.log(result.data)
 
-	export const updateOne = async (): Promise<User> => {
-		// update a user
+			return result.data
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
 
-		throw Error('Not Implemented')
-	}
-
-	export const deleteOne = async () => {
-		// delete a user
-		throw Error('Not Implemented')
-	}
-
-	export const getMe = async (): Promise<User | undefined> => {
-		// get currently logged in user
-		throw Error('Not Implemented')
+			throw Error('Malformed item data')
+		}
 	}
 }
 
