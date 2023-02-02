@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import ItemsIcon from '../assets/icons/items'
 import ItemsService, { ItemSearchReturn } from '../services/items'
@@ -33,8 +33,8 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 	const debouncedKeyword = useDebounce(keyword, 600)
 
 	const lazyItems = useInfiniteQuery(
-		['items', debouncedKeyword],
-		({ pageParam = 0 }) => ItemsService.search(debouncedKeyword, pageParam, NUM_ITEMS_PER_SEARCH),
+		['items', debouncedKeyword, activeTab],
+		({ pageParam = 0 }) => ItemsService.search(debouncedKeyword, pageParam, NUM_ITEMS_PER_SEARCH, activeTab.value),
 		{
 			getNextPageParam: (lastPage, allPages) => {
 				return lastPage.nextPage
@@ -83,6 +83,10 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 			return <ItemCard item={item} isActive={activeItem === item} key={index} setActiveItem={setActiveItem} />
 		})
 	}
+
+	useEffect(() => {
+		console.log(activeTab)
+	}, [activeTab])
 
 	return (
 		<div className='bg-white border-[1px] border-grey-border rounded-xl w-[30%] min-w-[320px] h-full overflow-hidden'>
