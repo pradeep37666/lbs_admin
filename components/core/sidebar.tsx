@@ -42,7 +42,7 @@ function Sidebar() {
 				<p>Items</p>
 			</div>
 
-			<div
+			{/* <div
 				onClick={() => router.push('/support')}
 				className={`${
 					isNoticeBoard ? 'text-red-base' : 'sidebar-text sidebar-hover-bg'
@@ -50,14 +50,14 @@ function Sidebar() {
 			>
 				<NoticeBoardIcon color={isNoticeBoard ? '#AC172C' : undefined} />
 				<p>Notice Board</p>
-			</div>
+			</div> */}
 			{/* hover state scale */}
 			{/* <div className='flex gap-2 items-center cursor-pointer font-bold text-[20px] text-blue-dark mb-2 hover:scale-105 hover:rotate-1 transition-all'>
-        <NoticeBoardIcon />
-        <p>Notice Board</p>
-    </div> */}
+				<NoticeBoardIcon />
+				<p>Notice Board</p>
+			</div> */}
 
-			<div className='flex gap-6 pl-2 mb-2'>
+			{/* <div className='flex gap-6 pl-2 mb-2'>
 				<div className={`border-r-[1px] ${isNoticeBoard ? 'border-red-base' : 'border-black'}`} />
 
 				<div className='py-4 w-full'>
@@ -74,9 +74,9 @@ function Sidebar() {
 						Disputes
 					</p>
 				</div>
-			</div>
+			</div> */}
 
-			<div
+			{/* <div
 				onClick={() => router.push('/blogs')}
 				className={`${
 					isBlogs ? 'text-red-base' : 'sidebar-text sidebar-hover-bg'
@@ -84,7 +84,7 @@ function Sidebar() {
 			>
 				<BlogsIcon color={isBlogs ? '#AC172C' : undefined} />
 				<p>Blogs</p>
-			</div>
+			</div> */}
 
 			<div
 				onClick={() => router.push('/users')}
