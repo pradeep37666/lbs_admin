@@ -38,6 +38,23 @@ namespace ItemsService {
 			throw Error('Malformed item data')
 		}
 	}
+
+	export const removeItem = async (itemId: string): Promise<boolean> => {
+		try {
+			const result = await Instance.delete(`items/${itemId}`)
+
+			console.log(result)
+
+			return true
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error deleting item')
+		}
+	}
 }
 
 export default ItemsService

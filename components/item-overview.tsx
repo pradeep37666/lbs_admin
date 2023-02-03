@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Automotive from '../assets/icons/automotive'
 import Delivery from '../assets/icons/delivery'
 import Location from '../assets/icons/location'
@@ -12,6 +12,7 @@ import UserService from '../services/users'
 import errorPopupParser from '../utils/error-popup-parser'
 import { useAtom } from 'jotai'
 import { snackAtom } from '../stores/atoms'
+import RemoveItemModal from './remove-item-modal'
 
 type Props = {
 	item: Item
@@ -19,8 +20,7 @@ type Props = {
 
 function ItemOverview({ item }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
-
-	// if (!item) return <div />
+	const [isRemoveItemModalOpen, setIsRemoveItemModalOpen] = useState(false)
 
 	const user = useQuery(['singleUser', item], () => UserService.getOne(item.userId), {
 		onError: (err) => errorPopupParser(err, setSnack),
@@ -28,8 +28,6 @@ function ItemOverview({ item }: Props) {
 	// const userReviews = useQuery(['userReviews', item], () => UserService.getReviews(item.userId), {
 	// 	onError: (err) => errorPopupParser(err, setSnack),
 	// })
-
-	// console.log(userReviews.data)
 
 	const getItemImage = (imageKey: string | undefined) => {
 		if (imageKey) return getImage(imageKey)
@@ -44,14 +42,12 @@ function ItemOverview({ item }: Props) {
 
 	return (
 		<div className='bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4 max-w-[64%]'>
+			<RemoveItemModal isOpen={isRemoveItemModalOpen} setIsOpen={setIsRemoveItemModalOpen} itemId={item.id} />
+
 			<div className='flex justify-between border-b-[1px] border-grey-border items-center pb-2 mb-4'>
 				<p className='text-[20px] text-blue-dark'>Item Overview</p>
 				<div className='flex gap-2 w-fit'>
-					<Button
-						text='Remove Item'
-						onClick={() => null}
-						className='py-1 rounded-md text-blue-dark bg-white border-blue-dark border-2 font-bold w-fit hover:bg-white'
-					/>
+					<Button text='Remove Item' onClick={() => setIsRemoveItemModalOpen(true)} className='btn-white' />
 					<Button
 						text='Contact User'
 						onClick={() => null}
