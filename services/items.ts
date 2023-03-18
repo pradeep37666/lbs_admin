@@ -39,6 +39,21 @@ namespace ItemsService {
 		}
 	}
 
+	export const getReviews = async (itemId: string): Promise<boolean> => {
+		try {
+			const result = await Instance.get(`items/${itemId}/ratings`)
+
+			return result.data
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error deleting item')
+		}
+	}
+
 	export const removeItem = async (itemId: string): Promise<boolean> => {
 		try {
 			const result = await Instance.delete(`items/${itemId}`)

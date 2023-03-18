@@ -19,14 +19,16 @@ function Snackbar({ snack, setIsOpen, timeoutMS }: Props) {
 
 	return (
 		<div
-			className={`w-fit absolute bottom-4 left-4 opacity-0 cursor-pointer select-none ${
-				isOpen && message ? 'opacity-100' : 'pointer-events-none'
+			className={`w-fit absolute bottom-4 left-4 cursor-pointer select-none ${
+				isOpen && message ? 'opacity-100' : 'pointer-events-none opacity-0 '
 			} transition-all duration-500`}
-			onClick={() => setIsOpen(false)}>
+			onClick={() => setIsOpen(false)}
+		>
 			<div
-				className={`w-full border-grey-base88 rounded-lg text-[16px] shadow-none hover:shadow-lg transition-all duration-300 text-white flex gap-4 items-center p-3 ${
+				className={`w-full border-grey-base rounded-lg text-[18px] shadow-none hover:shadow-lg transition-all duration-300 text-white flex gap-4 items-center p-3 ${
 					severity === 'success' ? 'bg-success-base' : 'bg-error-base'
-				}`}>
+				}`}
+			>
 				{message}
 				<Close onClick={() => setIsOpen(false)} />
 			</div>

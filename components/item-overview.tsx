@@ -13,6 +13,8 @@ import errorPopupParser from '../utils/error-popup-parser'
 import { useAtom } from 'jotai'
 import { snackAtom } from '../stores/atoms'
 import RemoveItemModal from './remove-item-modal'
+import ContactUserModal from './contact-user-modal'
+import ItemsService from '../services/items'
 
 type Props = {
 	item: Item
@@ -21,13 +23,15 @@ type Props = {
 function ItemOverview({ item }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 	const [isRemoveItemModalOpen, setIsRemoveItemModalOpen] = useState(false)
+	const [isContactUserModalOpen, setIsContactUserModalOpen] = useState(false)
 
-	const user = useQuery(['singleUser', item], () => UserService.getOne(item.userId), {
+	const { data: user } = useQuery(['singleUser', item], () => UserService.getOne(item.userId), {
 		onError: (err) => errorPopupParser(err, setSnack),
 	})
-	// const userReviews = useQuery(['userReviews', item], () => UserService.getReviews(item.userId), {
-	// 	onError: (err) => errorPopupParser(err, setSnack),
-	// })
+
+	const reviews = useQuery(['itemReviews', item], () => ItemsService.getReviews(item.id), {
+		onError: (err) => errorPopupParser(err, setSnack),
+	})
 
 	const getItemImage = (imageKey: string | undefined) => {
 		if (imageKey) return getImage(imageKey)
@@ -43,6 +47,13 @@ function ItemOverview({ item }: Props) {
 	return (
 		<div className='bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4 max-w-[64%]'>
 			<RemoveItemModal isOpen={isRemoveItemModalOpen} setIsOpen={setIsRemoveItemModalOpen} itemId={item.id} />
+			<ContactUserModal
+				isOpen={isContactUserModalOpen}
+				setIsOpen={setIsContactUserModalOpen}
+				user={user}
+				item={item}
+				userImage={getItemImage(user?.avatar)}
+			/>
 
 			<div className='flex justify-between border-b-[1px] border-grey-border items-center pb-2 mb-4'>
 				<p className='text-[20px] text-blue-dark'>Item Overview</p>
@@ -50,7 +61,7 @@ function ItemOverview({ item }: Props) {
 					<Button text='Remove Item' onClick={() => setIsRemoveItemModalOpen(true)} className='btn-white' />
 					<Button
 						text='Contact User'
-						onClick={() => null}
+						onClick={() => setIsContactUserModalOpen(true)}
 						className='py-1 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark'
 					/>
 				</div>
@@ -94,8 +105,8 @@ function ItemOverview({ item }: Props) {
 
 			<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center mb-4'>
 				<div className='flex items-center gap-3 text-[20px]'>
-					<img src={getItemImage(user.data?.avatar)} className='w-[45px] h-[45px] rounded-[50%] object-cover' />
-					<p className='font-bold'>{user.data?.firstName + ' ' + user.data?.lastName}</p>
+					<img src={getItemImage(user?.avatar)} className='w-[45px] h-[45px] rounded-[50%] object-cover' />
+					<p className='font-bold'>{user?.firstName + ' ' + user?.lastName}</p>
 					<p>{item.rating}/5</p>
 					<Star />
 				</div>

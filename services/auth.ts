@@ -32,7 +32,7 @@ namespace AuthService {
 				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
 			}
 
-			throw Error('Malformed item data')
+			throw Error('Incorrect login details')
 		}
 	}
 

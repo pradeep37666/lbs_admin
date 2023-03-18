@@ -33,6 +33,12 @@ module.exports = {
 					placeholder: '#BCBCBC',
 					text: '#ADADAD',
 				},
+				success: {
+					base: '#16A34A',
+				},
+				error: {
+					base: '#E33B45',
+				},
 			},
 		},
 		colors: {},
