@@ -7,6 +7,7 @@ import { snackAtom } from '../stores/atoms'
 import { Item } from '../types/items'
 import { Tab } from '../types/types'
 import errorPopupParser from '../utils/error-popup-parser'
+import getAllItems from '../utils/get-items-from-pagination'
 import useDebounce from '../utils/use-debounce'
 import ItemCard from './cards/item-card'
 import SearchInput from './core/search-input'
@@ -43,28 +44,6 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 		}
 	)
 
-	const getAllItems = (itemSearchResults: ItemSearchReturn[] | undefined): { items: Item[]; numItems: number } => {
-		if (!itemSearchResults)
-			return {
-				items: [],
-				numItems: 0,
-			}
-
-		const fullItemList: Item[] = []
-		let count = 0
-		itemSearchResults.forEach((page) => {
-			count = page.count
-			page.data.forEach((item) => {
-				fullItemList.push(item)
-			})
-		})
-
-		return {
-			items: fullItemList,
-			numItems: count,
-		}
-	}
-
 	const loadMoreItems = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
 		const hasHitBottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop <= e.currentTarget.clientHeight + 200
 		if (!lazyItems.data || !hasHitBottom) return
@@ -83,10 +62,6 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 			return <ItemCard item={item} isActive={activeItem === item} key={index} setActiveItem={setActiveItem} />
 		})
 	}
-
-	useEffect(() => {
-		console.log(activeTab)
-	}, [activeTab])
 
 	return (
 		<div className='bg-white border-[1px] border-grey-border rounded-xl w-[30%] min-w-[320px] h-full overflow-hidden'>

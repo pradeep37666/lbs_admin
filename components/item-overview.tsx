@@ -12,18 +12,22 @@ import UserService from '../services/users'
 import errorPopupParser from '../utils/error-popup-parser'
 import { useAtom } from 'jotai'
 import { snackAtom } from '../stores/atoms'
-import RemoveItemModal from './remove-item-modal'
-import ContactUserModal from './contact-user-modal'
+import ContactUserModal from './modals/contact-user-modal'
 import ItemsService from '../services/items'
+import { useRouter } from 'next/router'
+import RemoveItemModal from './modals/remove-item-modal'
 
 type Props = {
 	item: Item
+	isModal?: boolean
 }
 
-function ItemOverview({ item }: Props) {
+function ItemOverview({ item, isModal }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 	const [isRemoveItemModalOpen, setIsRemoveItemModalOpen] = useState(false)
 	const [isContactUserModalOpen, setIsContactUserModalOpen] = useState(false)
+
+	const router = useRouter()
 
 	const { data: user } = useQuery(['singleUser', item], () => UserService.getOne(item.userId), {
 		onError: (err) => errorPopupParser(err, setSnack),
@@ -44,12 +48,23 @@ function ItemOverview({ item }: Props) {
 		})
 	}
 
+	const renderModalButtons = () => {
+		if (isModal) return <div />
+
+		return (
+			<>
+				<Button text='Remove Item' onClick={() => setIsRemoveItemModalOpen(true)} className='btn-white' />
+				<Button text='Contact User' onClick={() => setIsContactUserModalOpen(true)} className='btn-blue' />
+			</>
+		)
+	}
+
 	return (
-		<div className='bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4 max-w-[64%]'>
-			<RemoveItemModal isOpen={isRemoveItemModalOpen} setIsOpen={setIsRemoveItemModalOpen} itemId={item.id} />
+		<div className='bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4'>
+			<RemoveItemModal isOpen={isRemoveItemModalOpen} onClose={() => setIsRemoveItemModalOpen(false)} itemId={item.id} />
 			<ContactUserModal
 				isOpen={isContactUserModalOpen}
-				setIsOpen={setIsContactUserModalOpen}
+				onClose={() => setIsContactUserModalOpen(false)}
 				user={user}
 				item={item}
 				userImage={getItemImage(user?.avatar)}
@@ -57,14 +72,7 @@ function ItemOverview({ item }: Props) {
 
 			<div className='flex justify-between border-b-[1px] border-grey-border items-center pb-2 mb-4'>
 				<p className='text-[20px] text-blue-dark'>Item Overview</p>
-				<div className='flex gap-2 w-fit'>
-					<Button text='Remove Item' onClick={() => setIsRemoveItemModalOpen(true)} className='btn-white' />
-					<Button
-						text='Contact User'
-						onClick={() => setIsContactUserModalOpen(true)}
-						className='py-1 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark'
-					/>
-				</div>
+				<div className='flex gap-2 w-fit'>{renderModalButtons()}</div>
 			</div>
 
 			<p className='font-bold text-[24px] mb-2'>{item.title}</p>
@@ -111,11 +119,7 @@ function ItemOverview({ item }: Props) {
 					<Star />
 				</div>
 
-				<Button
-					text='View Profile'
-					onClick={() => null}
-					className='py-1 rounded-md text-blue-dark bg-white border-blue-dark border-2 font-bold w-fit hover:bg-white'
-				/>
+				{!isModal && <Button text='View Profile' onClick={() => router.push(`users?id=${user?.id}`)} className='btn-white' />}
 			</div>
 
 			<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center '>

@@ -10,6 +10,12 @@ type ContactUserProps = {
 	message: string
 }
 
+export type UserSearchResult = {
+	data: User[]
+	count: number
+	nextPage: number
+}
+
 namespace UserService {
 	export const getOne = async (id: string): Promise<User> => {
 		try {
@@ -58,23 +64,27 @@ namespace UserService {
 			throw Error('Could not send user email')
 		}
 	}
-	// export const search = async (keyword: string, nextPage: number, limit: number): Promise<ItemSearchReturn> => {
-	// 	try {
-	// 		const result = await Instance.get(`items/search?keyword=${keyword}&offset=${nextPage}&limit=${limit}`)
+	export const search = async (keyword: string, nextPage: number, limit: number): Promise<UserSearchResult> => {
+		try {
+			let searchQuery = `keyword=${keyword}&offset=${nextPage}&limit=${limit}`
 
-	// 		return {
-	// 			...result.data,
-	// 			nextPage: nextPage + limit,
-	// 		}
-	// 	} catch (error) {
-	// 		console.log(error)
-	// 		if (error && axios.isAxiosError(error)) {
-	// 			if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
-	// 		}
+			const result = await Instance.get(`admin/users/list?${searchQuery}`)
 
-	// 		throw Error('Malformed item data')
-	// 	}
-	// }
+			if (result.data.length === 0) return result.data
+
+			return {
+				...result.data,
+				nextPage: nextPage + limit,
+			}
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error fetching user data.')
+		}
+	}
 }
 
 export default UserService

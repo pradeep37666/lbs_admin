@@ -35,7 +35,26 @@ namespace ItemsService {
 				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
 			}
 
-			throw Error('Malformed item data')
+			throw Error('Error fetching item data')
+		}
+	}
+	export const getUserItems = async (nextPage: number, limit: number, userId: string): Promise<ItemSearchReturn> => {
+		try {
+			const result = await Instance.get(`items/search/users/${userId}?offset=${nextPage}&limit=${limit}`)
+
+			if (result.data.length === 0) return result.data
+
+			return {
+				...result.data,
+				nextPage: nextPage + limit,
+			}
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error fetching item data')
 		}
 	}
 

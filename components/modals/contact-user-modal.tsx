@@ -1,24 +1,24 @@
 import { useAtom } from 'jotai'
 import React, { useState } from 'react'
 import { useMutation } from 'react-query'
-import ArrowUp from '../assets/icons/arrow-up'
-import Star from '../assets/icons/star'
-import UserService from '../services/users'
-import { snackAtom } from '../stores/atoms'
-import { Item } from '../types/items'
-import { User } from '../types/types'
-import errorPopupParser from '../utils/error-popup-parser'
-import Button from './core/button'
-import LongTextInput from './core/long-text-input'
-import ModalWrapper, { ModalProps } from './core/modal-wrapper'
+import ArrowUp from '../../assets/icons/arrow-up'
+import Star from '../../assets/icons/star'
+import UserService from '../../services/users'
+import { snackAtom } from '../../stores/atoms'
+import { Item } from '../../types/items'
+import { User } from '../../types/types'
+import errorPopupParser from '../../utils/error-popup-parser'
+import Button from '../core/button'
+import LongTextInput from '../core/long-text-input'
+import ModalWrapper, { ModalProps } from '../core/modal-wrapper'
 
 interface Props extends ModalProps {
 	user: User | undefined
-	item: Item
+	item?: Item
 	userImage: string
 }
 
-function ContactUserModal({ isOpen, setIsOpen, user, item, userImage }: Props) {
+function ContactUserModal({ isOpen, onClose, user, item, userImage }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 	const [message, setMessage] = useState('')
 
@@ -30,7 +30,7 @@ function ContactUserModal({ isOpen, setIsOpen, user, item, userImage }: Props) {
 				message: 'Message Sent!',
 				severity: 'success',
 			})
-			setIsOpen(false)
+			onClose()
 		},
 	})
 
@@ -45,18 +45,19 @@ function ContactUserModal({ isOpen, setIsOpen, user, item, userImage }: Props) {
 	}
 
 	return (
-		<ModalWrapper isOpen={isOpen} setIsOpen={setIsOpen}>
+		<ModalWrapper isOpen={isOpen} onClose={onClose}>
 			<div onClick={(e) => e.stopPropagation()} className='bg-white rounded-lg w-1/4 border border-grey-base'>
 				<div className='flex justify-between items-center p-4 border-b-2 mb-4 border-grey-base'>
 					<p className='text-xl text-blue-dark'>Contact User</p>
-					<Button text='Close' onClick={() => setIsOpen(false)} className='btn-white mb-0' />
+					<Button text='Close' onClick={() => onClose()} className='btn-white mb-0' />
 				</div>
 
 				<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center mb-4 mx-4'>
 					<div className='flex items-center gap-3 text-[20px]'>
 						<img src={userImage} className='w-[45px] h-[45px] rounded-[50%] object-cover' />
 						<p className='font-bold'>{user?.firstName + ' ' + user?.lastName}</p>
-						<p>{item.rating}/5</p>
+						{item && <p>{item.rating}/5</p>}
+
 						<Star />
 					</div>
 				</div>
