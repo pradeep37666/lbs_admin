@@ -1,8 +1,15 @@
 import Head from 'next/head'
-import { ReactElement } from 'react'
+import { useRouter } from 'next/router'
+import { ReactElement, useEffect } from 'react'
 import { NextPageWithLayout } from '../types/types'
 
 const Home: NextPageWithLayout = () => {
+	const router = useRouter()
+
+	useEffect(() => {
+		router.push('/login')
+	}, [])
+
 	return <div className='text-white-base text-[48px]'></div>
 }
 

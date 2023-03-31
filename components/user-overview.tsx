@@ -65,7 +65,12 @@ function UserOverview({ userId }: Props) {
 
 	return (
 		<div className='bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4 max-w-[64%]'>
-			<ContactUserModal isOpen={isContactUserModalOpen} setIsOpen={setIsContactUserModalOpen} user={user} userImage={getUserImage()} />
+			<ContactUserModal
+				isOpen={isContactUserModalOpen}
+				onClose={() => setIsContactUserModalOpen(false)}
+				user={user}
+				userImage={getUserImage()}
+			/>
 
 			<div className='flex justify-between items-center'>
 				<p className='text-[20px] text-blue-dark'>User Overview</p>

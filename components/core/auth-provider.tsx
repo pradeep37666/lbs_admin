@@ -10,33 +10,21 @@ type Props = {
 	children: ReactNode[]
 }
 
-const authRoutes = ['/blogs']
+const authRoutes = ['/blogs', 'disputes', '/items', '/support', '/users']
 const notAuthRoutes = ['/login']
 
 function AuthProvider({ children }: Props) {
 	const [, setAdmin] = useAtom(adminAtom)
 	const [isLoadingUser, setIsLoadingUser] = useState(true)
-	// const [token, setToken] = useState<string | null>(null)
 	const router = useRouter()
-
-	// const userResult = useQuery(['user', user], AuthService.getMe, {
-	//     retry: 1,
-	//     enabled: !!token,
-	//     onSuccess: (data) => {
-	//         setAdmin(data)
-	//     }
-	// })
 
 	const getAdminData = async (): Promise<Admin | undefined> => {
 		try {
-			const [adminData] = await Promise.all([
-				AuthService.getMe(),
-				// asyncTimeout(2000)
-			])
+			const [adminData] = await Promise.all([AuthService.getMe()])
 
-			setAdmin(adminData.user)
+			setAdmin(adminData)
 
-			return adminData.user
+			return adminData
 		} catch (error) {
 			setAdmin(undefined)
 			localStorage.removeItem('LBS_Admin_Token')
@@ -50,14 +38,19 @@ function AuthProvider({ children }: Props) {
 		const isNotAuthRoute = notAuthRoutes.includes(router.route)
 
 		if (!token) {
-			setIsLoadingUser(false)
 			setAdmin(undefined)
 			if (isAuthRoute) router.replace('/login')
+			setIsLoadingUser(false)
 			return
 		}
 		const admin = await getAdminData()
 
-		if (isNotAuthRoute && admin) router.replace('/')
+		console.log(isNotAuthRoute, admin)
+
+		if (isNotAuthRoute && admin) {
+			console.log('ye')
+			router.replace('/items')
+		}
 
 		setIsLoadingUser(false)
 	}
@@ -67,10 +60,6 @@ function AuthProvider({ children }: Props) {
 	}, [])
 
 	if (isLoadingUser) return <Loading />
-	// if (userResult.isLoading) return <Loading />
-
-	// const isAuthRoute = authRoutes.includes(router.route)
-	// const isNotAuthRoute = notAuthRoutes.includes(router.route)
 
 	return <>{children}</>
 }

@@ -36,7 +36,7 @@ namespace AuthService {
 		}
 	}
 
-	export const getMe = async (): Promise<AdminLoginResult> => {
+	export const getMe = async (): Promise<Admin> => {
 		try {
 			const result = await Instance.get(`admin/users/profile/me`)
 
