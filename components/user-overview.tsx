@@ -13,6 +13,7 @@ import Switch from './core/switch'
 import ItemsService from '../services/items'
 import UserItems from './user-items'
 import getItemsFromPagination from '../utils/get-items-from-pagination'
+import UserProfileCard from './cards/user-profile-card'
 
 type Props = {
 	userId: string
@@ -28,7 +29,7 @@ function UserOverview({ userId }: Props) {
 
 	const [isUserBanned, setIsUserBanned] = useState(false)
 
-	const { data: user } = useQuery(['singleUser', userId], () => UserService.getOne(userId), {
+	const { data: user, isLoading: isLoadingUser } = useQuery(['singleUser', userId], () => UserService.getOne(userId), {
 		onError: (err) => errorPopupParser(err, setSnack),
 	})
 
@@ -63,6 +64,11 @@ function UserOverview({ userId }: Props) {
 		}
 	}
 
+	const renderUserDetails = () => {
+		if (isLoadingUser) return <div className='w-full h-20 animate-pulse bg-grey-base rounded-lg ' />
+		else return <UserProfileCard user={user} />
+	}
+
 	return (
 		<div className='bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4 max-w-[64%]'>
 			<ContactUserModal
@@ -85,14 +91,7 @@ function UserOverview({ userId }: Props) {
 
 			<div className='border-b-[1px] border-grey-border mt-4 mb-6 mx-4' />
 
-			<div className='flex p-4 gap-4 bg-grey-light items-center rounded-md'>
-				<img src={getUserImage()} className='rounded-[50%] w-[40px] h-[40px]' />
-				<p className='font-bold text-xl'>
-					{user?.firstName} {user?.lastName}
-				</p>
-				<p>5 / 5</p>
-				<Star />
-			</div>
+			{renderUserDetails()}
 
 			<div className='border-b-[1px] border-grey-border my-6 mx-4' />
 

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Item } from '../types/items'
 import Instance from '../utils/axios'
 import moment from 'moment'
+import { Review } from '../types/types'
 
 const networkErrorMessage = 'There was an error with your connection, please try again'
 
@@ -58,7 +59,7 @@ namespace ItemsService {
 		}
 	}
 
-	export const getReviews = async (itemId: string): Promise<boolean> => {
+	export const getReviews = async (itemId: string): Promise<Review[]> => {
 		try {
 			const result = await Instance.get(`items/${itemId}/ratings`)
 

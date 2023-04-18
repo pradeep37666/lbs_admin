@@ -17,6 +17,7 @@ import ItemsService from '../services/items'
 import { useRouter } from 'next/router'
 import RemoveItemModal from './modals/remove-item-modal'
 import UserProfileCard from './cards/user-profile-card'
+import ItemReviewList from './item-review-list'
 
 type Props = {
 	item: Item
@@ -112,7 +113,7 @@ function ItemOverview({ item, isModal }: Props) {
 
 			<p className='font-bold text-[20px] mb-2'>Ratings</p>
 
-			<UserProfileCard itemRating={item.rating} isViewProfileButtonShown={!isModal} user={user} />
+			<UserProfileCard isViewProfileButtonShown={!isModal} user={user} />
 
 			<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center '>
 				<div className='flex items-center gap-3 text-[20px]'>
@@ -122,9 +123,14 @@ function ItemOverview({ item, isModal }: Props) {
 				</div>
 			</div>
 
-			<div className='border-b-[1px] border-grey-border pb-8 mb-4' />
+			{reviews.data && reviews.data.length !== 0 && (
+				<>
+					<div className='border-b-[1px] border-grey-border pb-8 mb-4' />
+					<p className='font-bold text-[20px] mb-2'>Reviews</p>
 
-			<p className='font-bold text-[20px] mb-2'>Reviews</p>
+					<ItemReviewList reviews={reviews.data ?? []} />
+				</>
+			)}
 		</div>
 	)
 }

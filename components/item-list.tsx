@@ -68,7 +68,7 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 	}
 
 	return (
-		<div className='bg-white border-[1px] border-grey-border rounded-xl w-[30%] min-w-[320px] h-full overflow-hidden'>
+		<div className='bg-white border-[1px] border-grey-border rounded-xl min-w-[360px] h-full overflow-hidden'>
 			<div className='flex gap-4 p-4 items-center'>
 				<ItemsIcon />
 				<p className='text-[20px] text-blue-dark'>All Items</p>

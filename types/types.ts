@@ -7,7 +7,22 @@ export type User = {
 	lastName: string
 	mobile: string
 	avatar?: string
+	borrowerRating: number
+	lenderRating: number
+	isDeleted: boolean
+	isLender: boolean
 	id: string
+}
+
+export type Review = {
+	bookingId: string
+	comment: string
+	createdAt: string
+	id: string
+	itemId: string
+	rating: number
+	updatedAt: string
+	user: User
 }
 
 export type SupportTicket = {

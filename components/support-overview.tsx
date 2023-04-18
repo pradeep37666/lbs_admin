@@ -36,7 +36,7 @@ function SupportOverview({ supportTicket }: Props) {
 
 			<div className='border-b-[1px] border-grey-border mt-4 mb-6 mx-4' />
 
-			<UserProfileCard itemRating={2} isViewProfileButtonShown user={user} />
+			<UserProfileCard isViewProfileButtonShown user={user} />
 
 			<p className='font-bold text-xl mb-2'>{supportTicket.subject}</p>
 

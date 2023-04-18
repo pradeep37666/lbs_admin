@@ -9,10 +9,9 @@ import Button from '../core/button'
 type Props = {
 	user?: User
 	isViewProfileButtonShown?: boolean
-	itemRating: number
 }
 
-function UserProfileCard({ user, isViewProfileButtonShown, itemRating }: Props) {
+function UserProfileCard({ user, isViewProfileButtonShown }: Props) {
 	const router = useRouter()
 
 	const getUserImage = () => {
@@ -25,8 +24,15 @@ function UserProfileCard({ user, isViewProfileButtonShown, itemRating }: Props) 
 			<div className='flex items-center gap-3 text-[20px]'>
 				<img src={getUserImage()} className='w-[45px] h-[45px] rounded-[50%] object-cover' />
 				<p className='font-bold'>{user?.firstName + ' ' + user?.lastName}</p>
-				<p>{itemRating}/5</p>
+				<p>B: {user?.borrowerRating}/5</p>
 				<Star />
+
+				{user?.isLender && user.lenderRating && (
+					<>
+						<p>L: {user?.borrowerRating}/5</p>
+						<Star />
+					</>
+				)}
 			</div>
 
 			{isViewProfileButtonShown && <Button text='View Profile' onClick={() => router.push(`users?id=${user?.id}`)} className='btn-white' />}
