@@ -16,6 +16,7 @@ import ContactUserModal from './modals/contact-user-modal'
 import ItemsService from '../services/items'
 import { useRouter } from 'next/router'
 import RemoveItemModal from './modals/remove-item-modal'
+import UserProfileCard from './cards/user-profile-card'
 
 type Props = {
 	item: Item
@@ -111,16 +112,7 @@ function ItemOverview({ item, isModal }: Props) {
 
 			<p className='font-bold text-[20px] mb-2'>Ratings</p>
 
-			<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center mb-4'>
-				<div className='flex items-center gap-3 text-[20px]'>
-					<img src={getItemImage(user?.avatar)} className='w-[45px] h-[45px] rounded-[50%] object-cover' />
-					<p className='font-bold'>{user?.firstName + ' ' + user?.lastName}</p>
-					<p>{item.rating}/5</p>
-					<Star />
-				</div>
-
-				{!isModal && <Button text='View Profile' onClick={() => router.push(`users?id=${user?.id}`)} className='btn-white' />}
-			</div>
+			<UserProfileCard itemRating={item.rating} isViewProfileButtonShown={!isModal} user={user} />
 
 			<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center '>
 				<div className='flex items-center gap-3 text-[20px]'>

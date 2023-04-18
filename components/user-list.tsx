@@ -1,10 +1,10 @@
 import { useAtom } from 'jotai'
 import React, { useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
-import UserService, { UserSearchResult } from '../services/users'
+import UserService from '../services/users'
 import { snackAtom } from '../stores/atoms'
-import { User } from '../types/types'
 import errorPopupParser from '../utils/error-popup-parser'
+import getItemsFromPagination from '../utils/get-items-from-pagination'
 import useDebounce from '../utils/use-debounce'
 import UserCard from './cards/user-card'
 import SearchInput from './core/search-input'
@@ -38,35 +38,13 @@ function UserList({ setActiveUserId, activeUserId }: Props) {
 		}
 	)
 
-	const getAllUsers = (userSearchResults: UserSearchResult[] | undefined): { users: User[]; numUsers: number } => {
-		if (!userSearchResults)
-			return {
-				users: [],
-				numUsers: 0,
-			}
-
-		const fullUserList: User[] = []
-		let count = 0
-		userSearchResults.forEach((page) => {
-			count = page.count
-			page.data.forEach((item) => {
-				fullUserList.push(item)
-			})
-		})
-
-		return {
-			users: fullUserList,
-			numUsers: count,
-		}
-	}
-
 	const loadMoreItems = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
 		const hasHitBottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop <= e.currentTarget.clientHeight + 200
 		if (!usersPaginated || !hasHitBottom) return
 
-		const { users, numUsers } = getAllUsers(usersPaginated.pages)
+		const { data, total } = getItemsFromPagination(usersPaginated.pages)
 
-		if (usersIsFetching || users.length >= numUsers) return
+		if (usersIsFetching || data.length >= total) return
 
 		if (hasHitBottom) fetchNextUsers()
 	}
@@ -74,7 +52,7 @@ function UserList({ setActiveUserId, activeUserId }: Props) {
 	const renderUsers = () => {
 		if (!usersPaginated) return <div className='ml-4'> No users found!</div>
 
-		return getAllUsers(usersPaginated.pages)?.users.map((user, index) => {
+		return getItemsFromPagination(usersPaginated.pages)?.data.map((user, index) => {
 			return <UserCard user={user} isActive={activeUserId === user.id} key={index} setActiveUser={() => setActiveUserId(user.id)} />
 		})
 	}

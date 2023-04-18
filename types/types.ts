@@ -10,6 +10,12 @@ export type User = {
 	id: string
 }
 
+export type SupportTicket = {
+	subject: string
+	message: string
+	userId: string
+}
+
 export type Admin = {
 	avatar: string
 	createdAt: string

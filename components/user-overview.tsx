@@ -55,7 +55,7 @@ function UserOverview({ userId }: Props) {
 	const renderUserTabContent = () => {
 		switch (activeTab) {
 			case 'Items':
-				return <UserItems items={getItemsFromPagination(userPaginatedItems?.pages).items} />
+				return <UserItems items={getItemsFromPagination(userPaginatedItems?.pages).data} />
 			case 'Disputes':
 				return <div />
 			case 'Support':

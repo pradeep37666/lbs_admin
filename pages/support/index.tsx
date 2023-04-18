@@ -1,15 +1,19 @@
 import Head from 'next/head'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import PageWrapper from '../../components/core/page-wrapper'
+import SupportList from '../../components/support-list'
+import SupportOverview from '../../components/support-overview'
+import { SupportTicket } from '../../types/types'
 
 function Support() {
+	const [activeSupportTicket, setActiveSupportTicket] = useState<SupportTicket>()
 	return (
 		<div className='w-full h-full select-none overflow-hidden'>
 			<p className='text-blue-dark h-[45px] text-[30px] font-bold mb-4'>Support</p>
 
 			<div className='w-full h-[calc(100%_-_65px)] flex gap-4'>
-				{/* <ItemList setActiveItem={setActiveItem} activeItem={activeItem} />
-        {activeItem && <ItemOverview item={activeItem} />} */}
+				<SupportList setActiveSupportTicket={setActiveSupportTicket} activeSupportTicket={activeSupportTicket} />
+				{activeSupportTicket && <SupportOverview supportTicket={activeSupportTicket} />}
 			</div>
 		</div>
 	)

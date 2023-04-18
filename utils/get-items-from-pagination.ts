@@ -1,26 +1,34 @@
-import { ItemSearchReturn } from '../services/items'
-import { Item } from '../types/items'
+type PaginatedDataSet<T> = {
+	data: T[]
+	count: number
+	nextPage: number
+}
 
-const getAllItems = (itemSearchResults: ItemSearchReturn[] | undefined): { items: Item[]; numItems: number } => {
-	if (!itemSearchResults)
+type PaginatedDataReturn<T> = {
+	data: T[]
+	total: number
+}
+
+const getItemsFromPagination = <T>(paginatedData: PaginatedDataSet<T>[] | undefined): PaginatedDataReturn<T> => {
+	if (!paginatedData)
 		return {
-			items: [],
-			numItems: 0,
+			data: [],
+			total: 0,
 		}
 
-	const fullItemList: Item[] = []
+	const fullDataList: T[] = []
 	let count = 0
-	itemSearchResults.forEach((page) => {
+	paginatedData.forEach((page) => {
 		count = page.count
 		page.data.forEach((item) => {
-			fullItemList.push(item)
+			fullDataList.push(item)
 		})
 	})
 
 	return {
-		items: fullItemList,
-		numItems: count,
+		data: fullDataList,
+		total: count,
 	}
 }
 
-export default getAllItems
+export default getItemsFromPagination
