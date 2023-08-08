@@ -17,14 +17,15 @@ import ItemsService from '../services/items'
 import { useRouter } from 'next/router'
 import RemoveItemModal from './modals/remove-item-modal'
 import UserProfileCard from './cards/user-profile-card'
-import ItemReviewList from './item-review-list'
+import ReviewList from './review-list'
 
 type Props = {
 	item: Item
 	isModal?: boolean
+	resetItem: () => void
 }
 
-function ItemOverview({ item, isModal }: Props) {
+function ItemOverview({ item, isModal, resetItem }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 	const [isRemoveItemModalOpen, setIsRemoveItemModalOpen] = useState(false)
 	const [isContactUserModalOpen, setIsContactUserModalOpen] = useState(false)
@@ -35,7 +36,7 @@ function ItemOverview({ item, isModal }: Props) {
 		onError: (err) => errorPopupParser(err, setSnack),
 	})
 
-	const reviews = useQuery(['itemReviews', item], () => ItemsService.getReviews(item.id), {
+	const { data: reviews } = useQuery(['itemReviews', item], () => ItemsService.getReviews(item.id), {
 		onError: (err) => errorPopupParser(err, setSnack),
 	})
 
@@ -63,12 +64,18 @@ function ItemOverview({ item, isModal }: Props) {
 
 	return (
 		<div className='bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4'>
-			<RemoveItemModal isOpen={isRemoveItemModalOpen} onClose={() => setIsRemoveItemModalOpen(false)} itemId={item.id} />
+			<RemoveItemModal
+				isOpen={isRemoveItemModalOpen}
+				onClose={() => {
+					setIsRemoveItemModalOpen(false)
+				}}
+				onRemove={resetItem}
+				itemId={item.id}
+			/>
 			<ContactUserModal
 				isOpen={isContactUserModalOpen}
 				onClose={() => setIsContactUserModalOpen(false)}
 				user={user}
-				item={item}
 				userImage={getItemImage(user?.avatar)}
 			/>
 
@@ -123,14 +130,14 @@ function ItemOverview({ item, isModal }: Props) {
 				</div>
 			</div>
 
-			{reviews.data && reviews.data.length !== 0 && (
+			{/* {reviews.data && reviews.data.length !== 0 && (
 				<>
 					<div className='border-b-[1px] border-grey-border pb-8 mb-4' />
-					<p className='font-bold text-[20px] mb-2'>Reviews</p>
+					<p className='font-bold text-[20px] mb-2'>Reviews</p> */}
 
-					<ItemReviewList reviews={reviews.data ?? []} />
-				</>
-			)}
+			<p className='font-bold text-[20px] mb-2'>Reviews</p>
+
+			{reviews && <ReviewList reviews={reviews} />}
 		</div>
 	)
 }

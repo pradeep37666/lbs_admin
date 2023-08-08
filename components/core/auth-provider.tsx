@@ -45,8 +45,6 @@ function AuthProvider({ children }: Props) {
 		}
 		const admin = await getAdminData()
 
-		console.log(isNotAuthRoute, admin)
-
 		if (isNotAuthRoute && admin) {
 			console.log('ye')
 			router.replace('/items')

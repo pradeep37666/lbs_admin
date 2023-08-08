@@ -32,6 +32,7 @@ module.exports = {
 					border: '#C7C7C7',
 					placeholder: '#BCBCBC',
 					text: '#ADADAD',
+					bg: '#EDEDED',
 				},
 				success: {
 					base: '#16A34A',

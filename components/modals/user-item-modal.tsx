@@ -13,7 +13,7 @@ function UserItemModal({ isOpen, onClose, item }: Props) {
 	const renderItemDetails = () => {
 		if (!item) return <div />
 
-		return <ItemOverview item={item} isModal />
+		return <ItemOverview item={item} isModal resetItem={onClose} />
 	}
 
 	return (

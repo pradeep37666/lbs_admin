@@ -29,7 +29,7 @@ function UserProfileCard({ user, isViewProfileButtonShown }: Props) {
 
 				{user?.isLender && user.lenderRating && (
 					<>
-						<p>L: {user?.borrowerRating}/5</p>
+						<p>L: {user?.lenderRating}/5</p>
 						<Star />
 					</>
 				)}

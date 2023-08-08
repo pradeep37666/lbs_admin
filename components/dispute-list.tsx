@@ -1,15 +1,13 @@
 import { useAtom } from 'jotai'
 import React, { useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
-import ItemsIcon from '../assets/icons/items'
-import ItemsService from '../services/items'
+import DisputeService from '../services/disputes'
 import { snackAtom } from '../stores/atoms'
-import { Item } from '../types/items'
-import { Tab } from '../types/types'
+import { Booking, Tab } from '../types/types'
 import errorPopupParser from '../utils/error-popup-parser'
 import getItemsFromPagination from '../utils/get-items-from-pagination'
 import useDebounce from '../utils/use-debounce'
-import ItemCard from './cards/item-card'
+import DisputeCard from './cards/dispute-card'
 import SearchInput from './core/search-input'
 import Tabs from './core/tabs'
 
@@ -21,11 +19,11 @@ const searchTabs = [
 ]
 
 type Props = {
-	setActiveItem: (activeItem: Item | undefined) => void
-	activeItem: Item | undefined
+	setActiveDisputeId: (activeTicket: string | undefined) => void
+	activeDisputeId: string | undefined
 }
 
-function ItemList({ setActiveItem, activeItem }: Props) {
+function DisputeList({ setActiveDisputeId, activeDisputeId }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 
 	const [keyword, setKeyword] = useState('')
@@ -34,12 +32,12 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 	const debouncedKeyword = useDebounce(keyword, 600)
 
 	const {
-		data: itemsPaginated,
-		isFetching: itemsIsFetching,
-		fetchNextPage: fetchNextItems,
+		data: disputesPaginated,
+		isFetching: disputesIsFetching,
+		fetchNextPage: fetchNextDisputes,
 	} = useInfiniteQuery(
-		['items', debouncedKeyword, activeTab],
-		({ pageParam = 0 }) => ItemsService.search(debouncedKeyword, pageParam, NUM_ITEMS_PER_SEARCH, activeTab.value),
+		['disputes', debouncedKeyword, activeTab],
+		({ pageParam = 0 }) => DisputeService.search(debouncedKeyword, pageParam, NUM_ITEMS_PER_SEARCH, activeTab.value),
 		{
 			getNextPageParam: (lastPage, allPages) => {
 				return lastPage.nextPage
@@ -50,27 +48,29 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 
 	const loadMoreItems = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
 		const hasHitBottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop <= e.currentTarget.clientHeight + 200
-		if (!itemsPaginated || !hasHitBottom) return
+		if (!disputesPaginated || !hasHitBottom) return
 
-		const { data, total } = getItemsFromPagination(itemsPaginated.pages)
+		const { data, total } = getItemsFromPagination(disputesPaginated.pages)
 
-		if (itemsIsFetching || data.length >= total) return
+		if (disputesIsFetching || data.length >= total) return
 
-		if (hasHitBottom) fetchNextItems()
+		if (hasHitBottom) fetchNextDisputes()
 	}
 
 	const renderItems = () => {
-		if (!itemsPaginated) return <div> No items found!</div>
-		return getItemsFromPagination(itemsPaginated.pages)?.data.map((item, index) => {
-			return <ItemCard item={item} isActive={activeItem === item} key={index} setActiveItem={setActiveItem} />
+		if (!disputesPaginated) return <div> No Tickets found!</div>
+
+		return getItemsFromPagination(disputesPaginated.pages)?.data.map((booking, index) => {
+			return (
+				<DisputeCard booking={booking} key={index} isActive={activeDisputeId === booking.id} setActive={() => setActiveDisputeId(booking.id)} />
+			)
 		})
 	}
 
 	return (
-		<div className='bg-white border-[1px] border-grey-border rounded-xl min-w-[360px] h-full overflow-hidden'>
+		<div className='bg-white border-[1px] border-grey-border rounded-xl w-[30%] min-w-[320px] h-full overflow-hidden'>
 			<div className='flex gap-4 p-4 items-center'>
-				<ItemsIcon />
-				<p className='text-[20px] text-blue-dark'>All Items</p>
+				<p className='text-[20px] text-blue-dark'>Disputes</p>
 
 				<div className='ml-auto'>
 					<Tabs tabs={searchTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -88,4 +88,4 @@ function ItemList({ setActiveItem, activeItem }: Props) {
 	)
 }
 
-export default ItemList
+export default DisputeList

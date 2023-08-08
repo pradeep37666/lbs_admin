@@ -1,58 +1,58 @@
 import { useAtom } from 'jotai'
 import React from 'react'
 import { useMutation, useQueryClient } from 'react-query'
-import ItemsService from '../../services/items'
 import { snackAtom } from '../../stores/atoms'
 import errorPopupParser from '../../utils/error-popup-parser'
 import Button from '../core/button'
 import ModalWrapper, { ModalProps } from '../core/modal-wrapper'
+import DisputeService from '../../services/disputes'
 
 interface Props extends ModalProps {
-	itemId: string
-	onRemove: () => void
+	bookingId: string
+	onDismiss: () => void
 }
 
-function RemoveItemModal({ isOpen, onClose, itemId, onRemove }: Props) {
+function EndDisputeModal({ isOpen, onClose, bookingId, onDismiss }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 	const queryClient = useQueryClient()
 
-	const removeItem = useMutation(ItemsService.removeItem, {
+	const { mutate: endDispute } = useMutation(DisputeService.endDispute, {
 		onError: (err) => errorPopupParser(err, setSnack),
 		onSuccess: () => {
 			setSnack({
-				message: 'Item Removed',
+				message: 'Dispute Dismissed',
 				isOpen: true,
 				severity: 'success',
 			})
-			queryClient.invalidateQueries('items')
+			queryClient.invalidateQueries(['disputes'])
 			onClose()
-			onRemove()
+			onDismiss()
 		},
 	})
 
 	return (
 		<ModalWrapper isOpen={isOpen} onClose={onClose}>
-			<div onClick={(e) => e.stopPropagation()} className='bg-white rounded-lg w-1/4 border border-grey-base'>
+			<div onClick={(e) => e.stopPropagation()} className='bg-white rounded-lg w-1/4 min-w-[400px] border border-grey-base'>
 				<div className='flex justify-between items-center p-4 border-b-2 mb-4 border-grey-base'>
-					<p className='text-xl text-blue-dark'>Remove Item</p>
+					<p className='text-xl text-blue-dark'>End Dispute</p>
 					<Button text='Close' onClick={onClose} className='btn-white mb-0' />
 				</div>
 
 				<div className='px-4 leading-5 mb-4'>
-					<p className='mb-4'>Are you sure you want to remove this item?</p>
+					<p className='mb-4'>Are you sure you want to end this dispute?</p>
 					<p>
-						If you remove this item from Little big shed, this user will no longer be able to see it in their shed, and borrows that have been
-						booked on the platform will be cancelled immediately.
+						Ending this dispute will remove it from the active disputes list. This should only be done once the dispute has been settled between
+						the borrower and lender.
 					</p>
 				</div>
 
 				<div className='flex gap-4 px-4 py-2'>
-					<Button text='Remove Item' onClick={() => removeItem.mutate(itemId)} className='btn-blue' />
-					<Button text='Keep Item' onClick={onClose} className='btn-white' />
+					<Button text='End Dispute' onClick={() => endDispute(bookingId)} className='btn-blue' />
+					<Button text='Keep Dispute' onClick={onClose} className='btn-white' />
 				</div>
 			</div>
 		</ModalWrapper>
 	)
 }
 
-export default RemoveItemModal
+export default EndDisputeModal

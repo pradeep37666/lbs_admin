@@ -1,3 +1,5 @@
+import { User } from './types'
+
 export type ItemImage = {
 	id: string
 	createdAt: Date
@@ -39,6 +41,7 @@ export type Item = {
 	is_deleted: boolean
 	deliveryOption: DeliveryOption
 	userId: string
+	user: User
 	images: ItemImage[]
 	address: ItemAddress
 	availabilities: ItemAvailability[]

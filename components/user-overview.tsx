@@ -3,7 +3,7 @@ import Star from '../assets/icons/star'
 import getImage from '../utils/getImage'
 import Button from './core/button'
 import ItemPlaceholder from '../assets/images/item-placeholder.png'
-import { useInfiniteQuery, useQuery } from 'react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query'
 import UserService from '../services/users'
 import errorPopupParser from '../utils/error-popup-parser'
 import { useAtom } from 'jotai'
@@ -13,6 +13,11 @@ import Switch from './core/switch'
 import ItemsService from '../services/items'
 import UserItems from './user-items'
 import getItemsFromPagination from '../utils/get-items-from-pagination'
+import SupportTicketService from '../services/support-tickets'
+import UserSupportTickets from './user-support-tickets'
+import Spinner from '../assets/icons/spinner'
+import UserDisputes from './user-disputes'
+import DisputeService from '../services/disputes'
 import UserProfileCard from './cards/user-profile-card'
 
 type Props = {
@@ -26,12 +31,22 @@ function UserOverview({ userId }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 	const [isContactUserModalOpen, setIsContactUserModalOpen] = useState(false)
 	const [activeTab, setActiveTab] = useState<UserTabs>('Items')
-
-	const [isUserBanned, setIsUserBanned] = useState(false)
+	const queryClient = useQueryClient()
 
 	const { data: user, isLoading: isLoadingUser } = useQuery(['singleUser', userId], () => UserService.getOne(userId), {
 		onError: (err) => errorPopupParser(err, setSnack),
 	})
+
+	const { data: userPaginatedTickets } = useInfiniteQuery(
+		['userTickets', userId, activeTab],
+		({ pageParam = 0 }) => SupportTicketService.getByUserId(userId, pageParam, NUM_ITEMS_PER_SEARCH),
+		{
+			getNextPageParam: (lastPage, allPages) => {
+				return lastPage.nextPage
+			},
+			onError: (err) => errorPopupParser(err, setSnack),
+		}
+	)
 
 	const { data: userPaginatedItems } = useInfiniteQuery(
 		['userItems', userId, activeTab],
@@ -44,13 +59,21 @@ function UserOverview({ userId }: Props) {
 		}
 	)
 
+	const { mutate: setUserIsRestricted, isLoading: isLoadingBanUnban } = useMutation(UserService.updateUser, {
+		onError: (err) => errorPopupParser(err, setSnack),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['singleUser'])
+		},
+	})
+
 	const getUserImage = () => {
 		if (user?.avatar) return getImage(user.avatar)
 		else return ItemPlaceholder.src
 	}
 
 	const toggleUserBanned = () => {
-		setIsUserBanned(!isUserBanned)
+		if (!user) return
+		setUserIsRestricted({ userId: user.id, newUser: { isRestricted: !user?.isRestricted } })
 	}
 
 	const renderUserTabContent = () => {
@@ -59,8 +82,9 @@ function UserOverview({ userId }: Props) {
 				return <UserItems items={getItemsFromPagination(userPaginatedItems?.pages).data} />
 			case 'Disputes':
 				return <div />
+			// return <UserDisputes disputes={getItemsFromPagination} />
 			case 'Support':
-				return <div />
+				return <UserSupportTickets tickets={getItemsFromPagination(userPaginatedTickets?.pages).data} />
 		}
 	}
 
@@ -100,8 +124,7 @@ function UserOverview({ userId }: Props) {
 					<p className='font-bold'>Ban This User</p>
 					<p>By banning this user they will not be able to access their Little Big Shed account, until un-banned.</p>
 				</div>
-
-				<Switch onChange={toggleUserBanned} value={isUserBanned} />
+				{isLoadingBanUnban ? <Spinner /> : <Switch onChange={toggleUserBanned} value={user?.isRestricted ?? false} />}
 			</div>
 
 			<div className='border-b-[1px] border-grey-border my-6 mx-4' />

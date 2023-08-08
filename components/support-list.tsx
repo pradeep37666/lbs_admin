@@ -1,16 +1,12 @@
 import { useAtom } from 'jotai'
 import React, { useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
-import ItemsIcon from '../assets/icons/items'
-import ItemsService, { ItemSearchReturn } from '../services/items'
 import SupportTicketService from '../services/support-tickets'
 import { snackAtom } from '../stores/atoms'
-import { Item } from '../types/items'
-import { SupportTicket, Tab } from '../types/types'
+import { Tab } from '../types/types'
 import errorPopupParser from '../utils/error-popup-parser'
 import getItemsFromPagination from '../utils/get-items-from-pagination'
 import useDebounce from '../utils/use-debounce'
-import ItemCard from './cards/item-card'
 import SupportTicketCard from './cards/support-ticket-card'
 import SearchInput from './core/search-input'
 import Tabs from './core/tabs'
@@ -23,11 +19,11 @@ const searchTabs = [
 ]
 
 type Props = {
-	setActiveSupportTicket: (activeTicket: SupportTicket | undefined) => void
-	activeSupportTicket: SupportTicket | undefined
+	setActiveSupportTicketId: (id: string | undefined) => void
+	activeSupportTicketId: string | undefined
 }
 
-function SupportList({ setActiveSupportTicket, activeSupportTicket }: Props) {
+function SupportList({ setActiveSupportTicketId, activeSupportTicketId }: Props) {
 	const [, setSnack] = useAtom(snackAtom)
 
 	const [keyword, setKeyword] = useState('')
@@ -68,9 +64,9 @@ function SupportList({ setActiveSupportTicket, activeSupportTicket }: Props) {
 			return (
 				<SupportTicketCard
 					supportTicket={ticket}
-					isActive={activeSupportTicket === ticket}
+					isActive={activeSupportTicketId === ticket.id}
 					key={index}
-					setIsActive={() => setActiveSupportTicket(ticket)}
+					setIsActive={() => setActiveSupportTicketId(ticket.id)}
 				/>
 			)
 		})

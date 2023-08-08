@@ -11,6 +11,11 @@ export type SupportTicketSearchReturn = {
 	nextPage: number
 }
 
+type RespondToTicketProps = {
+	supportId: string
+	reply: string
+}
+
 namespace SupportTicketService {
 	export const search = async (keyword: string, nextPage: number, limit: number, createdAt: string): Promise<SupportTicketSearchReturn> => {
 		try {
@@ -22,8 +27,6 @@ namespace SupportTicketService {
 			}
 
 			const result = await Instance.get(`admin/supports?${searchQuery}`)
-
-			console.log(result)
 
 			if (result.data.length === 0) return result.data
 
@@ -37,7 +40,68 @@ namespace SupportTicketService {
 				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
 			}
 
-			throw Error('Error fetching item data')
+			throw Error('Error fetching support tickets')
+		}
+	}
+	export const getByUserId = async (userId: string, nextPage: number, limit: number): Promise<SupportTicketSearchReturn> => {
+		try {
+			const result = await Instance.get(`admin/supports/users/${userId}?offset=${nextPage}&limit=${limit}`)
+
+			if (result.data.length === 0) return result.data
+
+			return {
+				...result.data,
+				nextPage: nextPage + limit,
+			}
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error fetching support tickets')
+		}
+	}
+
+	export const getOne = async (supportId: string): Promise<SupportTicket> => {
+		try {
+			const result = await Instance.get(`admin/supports/${supportId}`)
+
+			return result.data
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error fetching support tickets')
+		}
+	}
+
+	export const respondToTicket = async ({ supportId, reply }: RespondToTicketProps): Promise<boolean> => {
+		try {
+			const result = await Instance.put(`admin/supports/${supportId}`, { reply })
+			return true
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error responding to ticket')
+		}
+	}
+	export const dismissTicket = async (supportId: string): Promise<boolean> => {
+		try {
+			await Instance.delete(`admin/supports/${supportId}`)
+			return true
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error dismissing ticket')
 		}
 	}
 }

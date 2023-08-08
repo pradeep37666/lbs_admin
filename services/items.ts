@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Item } from '../types/items'
 import Instance from '../utils/axios'
 import moment from 'moment'
-import { Review } from '../types/types'
+import { User } from '../types/types'
 
 const networkErrorMessage = 'There was an error with your connection, please try again'
 
@@ -10,6 +10,16 @@ export type ItemSearchReturn = {
 	data: Item[]
 	count: number
 	nextPage: number
+}
+
+export type ItemReview = {
+	bookingId: string
+	comment: string
+	id: string
+	itemId: string
+	rating: number
+	user: User
+	userId: string
 }
 
 namespace ItemsService {
@@ -59,7 +69,7 @@ namespace ItemsService {
 		}
 	}
 
-	export const getReviews = async (itemId: string): Promise<Review[]> => {
+	export const getReviews = async (itemId: string): Promise<ItemReview[]> => {
 		try {
 			const result = await Instance.get(`items/${itemId}/ratings`)
 
@@ -76,7 +86,7 @@ namespace ItemsService {
 
 	export const removeItem = async (itemId: string): Promise<boolean> => {
 		try {
-			const result = await Instance.delete(`items/${itemId}`)
+			const result = await Instance.delete(`/admin/items/${itemId}`)
 
 			console.log(result)
 
@@ -88,6 +98,20 @@ namespace ItemsService {
 			}
 
 			throw Error('Error deleting item')
+		}
+	}
+	export const getOne = async (itemId: string): Promise<Item> => {
+		try {
+			const result = await Instance.get(`items/${itemId}`)
+
+			return result.data
+		} catch (error) {
+			console.log(error)
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
+
+			throw Error('Error getting item')
 		}
 	}
 }
