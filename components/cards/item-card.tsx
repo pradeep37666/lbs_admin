@@ -3,6 +3,7 @@ import { Item } from '../../types/items'
 import moment from 'moment'
 import ItemPlaceholder from '../../assets/images/item-placeholder.png'
 import getImage from '../../utils/getImage'
+import Image from "next/image";
 
 type Props = {
 	item: Item
@@ -25,8 +26,7 @@ function ItemCard({ item, isActive, setActiveItem }: Props) {
 				onClick={() => setActiveItem(item)}
 			>
 				<div className='flex items-center gap-3'>
-					<img src={getItemImage()} className='rounded-sm w-[60px] h-[60px]' />
-
+					<Image  src={getItemImage()} width={60} height={60} className='rounded-sm w-[60px] h-[60px]' alt='' />
 					<div>
 						<p className='font-bold text-[16px] '>{item.title}</p>
 						<div className='flex gap-1'>
@@ -34,7 +34,7 @@ function ItemCard({ item, isActive, setActiveItem }: Props) {
 							<p className='text-[14px] text-grey-text'>Posted {moment(item.createdAt).format('DD/MM/YYYY')}</p>
 						</div>
 						<div className='flex gap-1'>
-							<img className='border border-black rounded-[50%] h-[16px] w-[16px]' />
+							<Image src={''}  width={16} height={16}  className='border border-black rounded-[50%] h-[16px] w-[16px]' alt='' />
 							<p className='text-[14px]'>{item.rating}</p>
 						</div>
 					</div>

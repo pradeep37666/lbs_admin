@@ -3,6 +3,7 @@ import moment from 'moment'
 import ItemPlaceholder from '../../assets/images/item-placeholder.png'
 import getImage from '../../utils/getImage'
 import { User } from '../../types/types'
+import Image from "next/image";
 
 type Props = {
 	user: User
@@ -25,7 +26,7 @@ function UserCard({ user, isActive, setActiveUser }: Props) {
 				onClick={setActiveUser}
 			>
 				<div className='flex items-center gap-3'>
-					<img src={getUserImage()} className='rounded-[50%] w-[40px] h-[40px]' />
+					<Image src={getUserImage()} width={40} height={40} className='rounded-[50%] w-[40px] h-[40px]' alt='' />
 
 					<p className='font-bold text-blue-dark text-lg'>
 						{user.firstName} {user.lastName}

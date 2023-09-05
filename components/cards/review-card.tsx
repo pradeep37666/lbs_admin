@@ -3,6 +3,8 @@ import { ItemReview } from '../../services/items'
 import getImage from '../../utils/getImage'
 import ItemPlaceholder from '../../assets/images/item-placeholder.png'
 import Star from '../../assets/icons/star'
+import Image from "next/image";
+
 
 type Props = {
 	review: ItemReview
@@ -17,7 +19,7 @@ const ReviewCard = ({ review }: Props) => {
 	return (
 		<div className='border rounded-xl border-grey-border p-4 justify-between items-center mb-4 w-[250px] min-w-[250px] max-w-[250px] overflow-hidden'>
 			<div className='flex items-center text-[14px] gap-3 mb-2'>
-				<img src={getUserImage()} className='w-[35px] h-[35px] rounded-[50%] object-cover' />
+				<Image src={getUserImage()}  width={35}   height={35} className='w-[35px] h-[35px] rounded-[50%] object-cover' alt='' />
 				<div>
 					<p className='font-bold'>{review.user?.firstName + ' ' + review.user?.lastName}</p>
 					<div className=' flex gap-2'>

@@ -10,6 +10,8 @@ import errorPopupParser from '../../utils/error-popup-parser'
 import Button from '../core/button'
 import LongTextInput from '../core/long-text-input'
 import ModalWrapper, { ModalProps } from '../core/modal-wrapper'
+import Image from "next/image";
+
 
 interface Props extends ModalProps {
 	user: User | undefined
@@ -52,7 +54,7 @@ function ContactUserModal({ isOpen, onClose, user, userImage }: Props) {
 
 				<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center mb-4 mx-4'>
 					<div className='flex items-center gap-3 text-[20px]'>
-						<img src={userImage} className='w-[45px] h-[45px] rounded-[50%] object-cover' />
+						<Image src={userImage} width={45} height={45} className='w-[45px] h-[45px] rounded-[50%] object-cover' alt='' />
 						<p className='font-bold'>{user?.firstName + ' ' + user?.lastName}</p>
 						<p>{user?.borrowerRating}/5</p>
 
@@ -69,7 +71,7 @@ function ContactUserModal({ isOpen, onClose, user, userImage }: Props) {
 						placeholder='Enter message to user...'
 					/>
 					<div className='flex justify-between items-center'>
-						<p className='text-xs text-grey-base'>This will send an email to the user's registered email address.</p>
+						<p className='text-xs text-grey-base'>This will send an email to the user&apos;s registered email address.</p>
 						<Button text='' icon={<ArrowUp />} className='btn-blue px-1 ml-auto' onClick={() => sendMessage()} />
 					</div>
 				</div>

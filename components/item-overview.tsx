@@ -18,6 +18,7 @@ import { useRouter } from 'next/router'
 import RemoveItemModal from './modals/remove-item-modal'
 import UserProfileCard from './cards/user-profile-card'
 import ReviewList from './review-list'
+import Image from "next/image";
 
 type Props = {
 	item: Item
@@ -47,7 +48,7 @@ function ItemOverview({ item, isModal, resetItem }: Props) {
 
 	const renderItemImages = () => {
 		return item?.images.map((image, index) => {
-			return <img key={index} src={getItemImage(image?.imageKey)} className='w-[120px] h-[120px] rounded-lg object-cover' />
+			return <Image key={index} src={getItemImage(image?.imageKey)} width={120} height={120} className='w-[120px] h-[120px] rounded-lg object-cover' alt='' />
 		})
 	}
 

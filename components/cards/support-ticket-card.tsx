@@ -7,6 +7,7 @@ import errorPopupParser from '../../utils/error-popup-parser'
 import UserService from '../../services/users'
 import { useAtom } from 'jotai'
 import { snackAtom } from '../../stores/atoms'
+import Image from "next/image";
 
 type Props = {
 	supportTicket: SupportTicket
@@ -38,7 +39,7 @@ function SupportTicketCard({ supportTicket, isActive, setIsActive }: Props) {
 						<p className='font-bold text-[16px] '>{supportTicket.subject}</p>
 						<p className='text-[14px] h-6 truncate'>{supportTicket.message}</p>
 						<div className='flex gap-2 items-center'>
-							<img src={getUserImage()} className='rounded-[50%] w-[16px] h-[16px]' />
+							<Image src={getUserImage()} width={16} height={16} className='rounded-[50%] w-[16px] h-[16px]' alt='' />
 							<p className='text-[14px] font-bold'>
 								{user?.firstName} {user?.lastName}
 							</p>

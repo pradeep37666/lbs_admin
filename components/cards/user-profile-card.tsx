@@ -5,6 +5,8 @@ import { User } from '../../types/types'
 import getImage from '../../utils/getImage'
 import ItemPlaceholder from '../../assets/images/item-placeholder.png'
 import Button from '../core/button'
+import Image from "next/image";
+
 
 type Props = {
 	user?: User
@@ -22,7 +24,7 @@ function UserProfileCard({ user, isViewProfileButtonShown }: Props) {
 	return (
 		<div className='flex border rounded-xl border-grey-border p-4 justify-between items-center mb-4'>
 			<div className='flex items-center gap-3 text-[20px]'>
-				<img src={getUserImage()} className='w-[45px] h-[45px] rounded-[50%] object-cover' />
+				<Image src={getUserImage()} width={45} height={45} className='w-[45px] h-[45px] rounded-[50%] object-cover' alt='' />
 				<p className='font-bold'>{user?.firstName + ' ' + user?.lastName}</p>
 				<p>B: {user?.borrowerRating}/5</p>
 				<Star />

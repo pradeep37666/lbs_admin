@@ -17,6 +17,8 @@ import Delivery from '../assets/icons/delivery'
 import DisputeItemCosts from './dispute-item-costs'
 import DisputeItemDates from './dispute-item-dates'
 import EndDisputeModal from './modals/end-dispute-modal'
+import Image from "next/image";
+
 
 type Props = {
 	disputeId: string
@@ -80,7 +82,7 @@ function DisputeOverview({ disputeId }: Props) {
 
 		return (
 			<div className='flex gap-4'>
-				<img src={getItemImage(item.images[0]?.imageKey)} className='w-[84px] h-[84px] rounded-lg object-cover' />
+				<Image src={getItemImage(item.images[0]?.imageKey)} width={84} height={84} className='w-[84px] h-[84px] rounded-lg object-cover' alt=''/>
 				<div>
 					<p className='font-bold text-[20px]'>{item?.title}</p>
 					<p className='text-red-base text-[18px]'>${item.price}</p>
