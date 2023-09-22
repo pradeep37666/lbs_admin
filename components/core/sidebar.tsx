@@ -71,7 +71,7 @@ function Sidebar() {
 				</div>
 			</div>
 
-			{/* <div
+			<div
 				onClick={() => router.push('/blogs')}
 				className={`${
 					isBlogs ? 'text-red-base' : 'sidebar-text sidebar-hover-bg'
@@ -79,7 +79,7 @@ function Sidebar() {
 			>
 				<BlogsIcon color={isBlogs ? '#AC172C' : undefined} />
 				<p>Blogs</p>
-			</div> */}
+			</div>
 
 			<div
 				onClick={() => router.push('/users')}

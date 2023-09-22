@@ -141,3 +141,15 @@ export type Tab = {
 	name: string
 	value: string
 }
+
+export type Blog = {
+	id?: string
+	publishDate: string
+	image: string
+	category: [string]
+	metaTitle: string
+	metaDesc: string
+	bannerTitle: string
+	contentTitle: string
+	contentBody: string
+}
