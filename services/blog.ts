@@ -17,6 +17,11 @@ export type Blog = {
 
 }
 
+type UpdateBlogProps = {
+	blogId: string| string[] | undefined
+	blog: Partial<Blog>
+}
+
 
 namespace BlogService {
     export const createBlog = async (payload: Blog): Promise<any> => {
@@ -28,7 +33,6 @@ namespace BlogService {
             if (error && axios.isAxiosError(error)) {
                 if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
             }
-
             throw Error('Something went wrong')
         }
     }
@@ -38,7 +42,6 @@ namespace BlogService {
         try {
             const result = await Instance.get(`admin/blogs?${searchQuery}`)
             if (result.data.length === 0) return result.data
-
 			return {
 				...result.data,
 				nextPage: nextPage + limit,
@@ -48,7 +51,6 @@ namespace BlogService {
             if (error && axios.isAxiosError(error)) {
                 if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
             }
-
             throw Error('Something went wrong')
         }
     }
@@ -63,7 +65,17 @@ namespace BlogService {
 			if (error && axios.isAxiosError(error)) {
 				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
 			}
-
+			throw Error('Error getting  blog')
+		}
+	}
+    export const updateBlog = async ({ blogId, blog }: UpdateBlogProps): Promise<Blog> => {   
+		try {
+			const result = await Instance.patch(`admin/blogs/${blogId}`, blog)            
+			return result.data
+		} catch (error) {
+			if (error && axios.isAxiosError(error)) {
+				if (error?.code === 'ERR_NETWORK' || error?.code === 'ECONNABORTED') throw Error(networkErrorMessage)
+			}
 			throw Error('Error getting  blog')
 		}
 	}

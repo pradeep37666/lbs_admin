@@ -1,37 +1,36 @@
-import { useFormik } from 'formik';
-import { useAtom } from 'jotai';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import Button from '../../../components/core/button';
-import Sidebar from '../../../components/core/sidebar';
-import ValidationInput from '../../../components/core/validation-input';
-import BlogService from '../../../services/blog';
-import { snackAtom } from '../../../stores/atoms';
-import errorPopupParser from '../../../utils/error-popup-parser';
-import { FileService } from '../../../utils/uploadImage';
+import { useFormik } from 'formik'
+import { useAtom } from 'jotai'
+import dynamic from 'next/dynamic'
+import Head from 'next/head'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { ReactElement, useState } from 'react'
+import { useMutation, useQuery } from 'react-query'
+import Button from '../../../components/core/button'
+import PageWrapper from '../../../components/core/page-wrapper'
+import ValidationInput from '../../../components/core/validation-input'
+import BlogService from '../../../services/blog'
+import { snackAtom } from '../../../stores/atoms'
+import errorPopupParser from '../../../utils/error-popup-parser'
+import getImage from '../../../utils/getImage'
+import { FileService } from '../../../utils/uploadImage'
 const SunEditorComponent = dynamic(() => import('../../../components/sun-editor/sun-editor'), { ssr: false })
 
-
-const NUM_ITEMS_PER_SEARCH = 10
-function Blogs() {
+function BlogEditor() {
 	const router = useRouter()
-	const {id} =router.query
+	const { id } = router.query
 	const [, setSnack] = useAtom(snackAtom)
 	const [keyword, setKeyword] = useState('')
 	// const debouncedKeyword = useDebounce(keyword, 600)
 	const [imageBlobUrl, setImageBlobUrl] = useState('')
 	const [imageFile, setImageFile] = useState('')
 	// const [blog,setBlog] = useState<any>({})
-	
-	 const { data: blog } = useQuery(['singleBlog', id], () => BlogService.getBlog(id?.toString()), {
-		onError: (err) => errorPopupParser(err, setSnack),
-	})	 
 
+	const { data: blog, isLoading, isFetched } = useQuery(['singleBlog', id], () => BlogService.getBlog(id?.toString()), {
+		onError: (err) => errorPopupParser(err, setSnack),
+	})
 	const { values, errors, touched, setFieldValue, handleSubmit } = useFormik({
-		initialValues: blog || { 
+		initialValues: blog || {
 			image: '',
 			category: '',
 			metaTitle: '',
@@ -42,51 +41,86 @@ function Blogs() {
 		},
 		enableReinitialize: true,
 		onSubmit: (values) => {
-			postBlog.mutate({ 
-				image: values.image,
-				category:values.category,
-				metaTitle: values.metaTitle,
-			metaDesc: values.metaDesc,
-			bannerTitle: values.bannerTitle,
-			contentTitle: values.contentTitle,
-			contentBody: values.contentBody			
-			})
+			if(!id){
+				postBlog.mutate({
+					image: values.image,
+					category: values.category,
+					metaTitle: values.metaTitle,
+					metaDesc: values.metaDesc,
+					bannerTitle: values.bannerTitle,
+					contentTitle: values.contentTitle,
+					contentBody: values.contentBody
+				})
+			}
+			else {
+				updateBlog.mutate({
+					blogId : id ,
+					blog : {
+						image: values.image,
+						category: values.category,
+						metaTitle: values.metaTitle,
+						metaDesc: values.metaDesc,
+						bannerTitle: values.bannerTitle,
+						contentTitle: values.contentTitle,
+						contentBody: values.contentBody
+					}
+				})
+			}
+			
 		},
 	})
 
+	
+
+
 	const postBlog = useMutation(BlogService.createBlog, {
 		onSuccess: (result) => {
+			setSnack({
+				isOpen: true,
+				message: 'Blog created successfully',
+				severity: 'success',
+			})
+			router.push('/blogs')
 		},
-		onError: (err) =>{
+		onError: (err) => {
+			errorPopupParser(err, setSnack)
+		},
+	})
+
+	const updateBlog = useMutation(BlogService.updateBlog, {
+		onSuccess: (result) => {
+			setSnack({
+				isOpen: true,
+				message: 'Blog updated successfully',
+				severity: 'success',
+			})
+			router.push('/blogs')
+			
+		},
+		onError: (err) => {
 			errorPopupParser(err, setSnack)
 		},
 	})
 	const handleChange = async ({ target }: any) => {
 		setImageFile(target.value)
 		const file = target.files[0]
-
 		if (target.files.length === 0) return
 		const fileLink = await FileService.uploadSingleImage(file)
 		if (!fileLink) return
 		setImageBlobUrl(URL.createObjectURL(file))
-		setFieldValue('image',fileLink)
-
-
+		setFieldValue('image', fileLink)
 	}
-
+	const getSuneditor = (value: string | undefined) => {
+		return <SunEditorComponent content={value} setFieldValue={setFieldValue} />
+	}
 	return (
-		<div className='w-screen h-screen bg-grey-light flex'>
-			<Sidebar />
-
-			<div className='w-[calc(100%_-_240px)] bg-grey-light py-6 px-12 flex flex-col'>
-				<p className='text-[16px] text-blue-dark pl-8 mb-2'>
-					Welcome back, <span className='font-bold '>Sarmuhabat</span> 👋
-				</p>
+		<div className='w-full h-full select-none overflow-hidden'>
+			<p className='text-blue-dark h-[45px] text-[30px] font-bold mb-4'>Blogs</p>
+			<div className='w-full h-[calc(100%_-_65px)] flex gap-4'>
 				<div>
 					<form>
 						<div className='flex gap-16 justify-center '>
 							<div className='min-w-min'>
-
 								<ValidationInput
 									placeholder='Banner Title'
 									className='mb-3'
@@ -104,8 +138,6 @@ function Blogs() {
 									value={values.contentTitle}
 									onChange={(e) => setFieldValue('contentTitle', e.target.value)}
 								/>
-
-
 								<ValidationInput
 									placeholder='Meta Title'
 									className='mb-3'
@@ -123,7 +155,6 @@ function Blogs() {
 									value={values.metaDesc}
 									onChange={(e) => setFieldValue('metaDesc', e.target.value)}
 								/>
-
 								<div className='flex  justify-space-between'>
 									<ValidationInput
 										placeholder='Upload Image'
@@ -134,10 +165,9 @@ function Blogs() {
 										value={imageFile}
 										onChange={(e) => handleChange(e)}
 									/>
-									{imageBlobUrl !== '' && (<div className='ml-5'>
-										<Image className='rounded-lg' src={imageBlobUrl} height={66} width={66} />
+									{(values.image || imageBlobUrl !== '') && (<div className='ml-5'>
+										<Image className='rounded-lg' src={imageBlobUrl || getImage(values.image)} height={66} width={66} />
 									</div>)}
-
 								</div>
 
 								<ValidationInput
@@ -148,18 +178,14 @@ function Blogs() {
 									value={values.category}
 									onChange={(e) => setFieldValue('category', e.target.value)}
 								/>
-
 							</div>
 							<div className='remove-all'>
-								{/* <JoditEditorComponent setFieldValue={setFieldValue} /> */}
-								{/* <JoditEditorComponent value={''} onChange={(text:any)=>{console.log("---yy---",text);
-								}}  /> */}
-								<SunEditorComponent setFieldValue={setFieldValue} />
+								{!isLoading && isFetched && getSuneditor(blog?.contentBody || values.contentBody)}
 							</div>
 						</div>
 						<div className='flex  justify-center mt-8'>
 							<div className='w-[340px] '>
-								<Button text='Post' onClick={handleSubmit} className='mb-8' type='submit' />
+								<Button text={!id ?'Create Blog' :'Update Blog'} onClick={handleSubmit} className='mb-8' type='submit' />
 							</div>
 
 						</div>
@@ -167,11 +193,20 @@ function Blogs() {
 				</div>
 
 			</div>
-			
 		</div>
-
 	)
 }
 
+BlogEditor.getLayout = function getLayout(page: ReactElement) {
+	return (
+		<PageWrapper>
+			<Head>
+				<title>Blog</title>
+			</Head>
 
-export default Blogs
+			{page}
+		</PageWrapper>
+	)
+}
+
+export default BlogEditor

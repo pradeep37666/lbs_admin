@@ -12,21 +12,12 @@ import BlogCard from '../../components/cards/blog-card'
 import BlogsIcon from '../../assets/icons/blogs'
 import router from 'next/router'
 
-
 const NUM_ITEMS_PER_SEARCH = 15
-
 function Blogs() {
-
-
 	const [, setSnack] = useAtom(snackAtom)
 	const [, setBlog] = useAtom(blogAtom)
-
 	const [keyword, setKeyword] = useState('')
-
 	const debouncedKeyword = useDebounce(keyword, 600)
-
-
-
 
 	const {
 		data: blogPaginated,
@@ -42,8 +33,6 @@ function Blogs() {
 			onError: (err) => errorPopupParser(err, setSnack),
 		}
 	)
-
-
 	const renderItems = () => {
 		if (!blogPaginated) return <div> No Blogs found!</div>
 
@@ -53,24 +42,20 @@ function Blogs() {
 					key={index}
 					blog={blog}
 					setClickedBlogId={() => {
-						console.log("----rrrr---");
 					}}
 				/>
 			)
 		})
 	}
 
-
 	return (
 		<div className='w-full h-full select-none'>
 			<p className='text-blue-dark text-[30px] font-bold mb-4'>Blogs</p>
-
 			<div className='w-full min-h-[calc(100%_-_65px)] flex grid grid-cols-4 gap-4 overflow-y-auto'>
 				{renderItems()}
 			</div>
 
 			<div className="group fixed top-0 right-0 p-2  flex items-end justify-end w-400 h-24 cursor-pointer " onClick={()=> router.push('/blogs/create-edit')}>
-
 				<div className="bg-red-base text-white shadow-xl flex items-center gap-2  p-3 rounded-full z-50   w-400 ">
 					<BlogsIcon color='#FFF' />
 					<div className='font-semibold'>Create Blog</div>
@@ -94,3 +79,4 @@ Blogs.getLayout = function getLayout(page: ReactElement) {
 }
 
 export default Blogs
+

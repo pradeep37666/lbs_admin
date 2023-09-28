@@ -8,10 +8,15 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
 });
  type Editor = {
     setFieldValue : (name:string,text:string) =>{}
+    content :any
 }
 
-export default function SunEditorComponent({setFieldValue}:Editor) {
-    const [content, setContent] = useState("");
+export default function SunEditorComponent({setFieldValue,content}:Editor) {
+    // const [content, setContent] = useState("");
+    // console.log("--content-",content);
+    
+
+    
 
     return (
         <div>
