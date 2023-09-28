@@ -29,7 +29,7 @@ function Sidebar() {
 	}
 
 	return (
-		<div className='h-screen w-[240px]   bg-[url("assets/images/nav-bg.png")] bg-no-repeat bg-cover p-8 select-none flex flex-col'>
+		<div className='h-screen w-[240px] bg-nav-bg bg-no-repeat bg-cover p-8 select-none flex flex-col'>
 			<LogoRed className='mb-8' />
 
 			<div
