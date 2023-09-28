@@ -70,9 +70,6 @@ function BlogEditor() {
 		},
 	})
 
-	
-
-
 	const postBlog = useMutation(BlogService.createBlog, {
 		onSuccess: (result) => {
 			setSnack({
