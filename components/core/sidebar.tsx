@@ -19,7 +19,7 @@ function Sidebar() {
 	const isNoticeBoard = currentRoute === '/support' || currentRoute === '/disputes'
 	const isSupport = currentRoute === '/support'
 	const isDisputes = currentRoute === '/disputes'
-	const isBlogs = currentRoute === '/blogs'
+	const isBlogs = currentRoute === '/blogs' || currentRoute.split("/").includes("blogs")
 	const isUsers = currentRoute === '/users'
 
 	const logoutAdmin = () => {

@@ -14,6 +14,8 @@ export type Blog = {
     contentTitle: string,
     contentBody: string,
     image: string
+    isDraft?: boolean
+    updatedAt?:Date
 
 }
 

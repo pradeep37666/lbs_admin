@@ -142,14 +142,7 @@ export type Tab = {
 	value: string
 }
 
-export type Blog = {
-	id?: string
-	publishDate: string
-	image: string
-	category: [string]
-	metaTitle: string
-	metaDesc: string
-	bannerTitle: string
-	contentTitle: string
-	contentBody: string
+export type publishBlog = {
+	id: string
+	draft:boolean
 }
