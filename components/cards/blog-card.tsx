@@ -7,38 +7,42 @@ import ToggleButton from '../core/toggle-button'
 import EditIcon from '../../assets/icons/edit'
 import PrevIcon from '../../assets/icons/prevIcon.';
 import { useMutation } from 'react-query'
-import BlogService from '../../services/blog'
+import BlogService, { Blog } from '../../services/blog'
 import errorPopupParser from '../../utils/error-popup-parser'
 import { snackAtom } from '../../stores/atoms'
 import { useAtom } from 'jotai'
 import { publishBlog } from '../../types/types'
 
 
+type Props = {
+    blog: Blog
+    key: number
+}
 
-
-const BlogCard = ({ blog }: any) => {
+const BlogCard = ({ blog }: Props) => {
     const [, setSnack] = useAtom(snackAtom)
-    const [isPublish,setIsPublish] = useState<publishBlog>()     
-   const handleChange = (data:any)=>{
-    updateBlog.mutate({
-        blogId : data.id,
-        blog : {
-           isDraft:data.value
-        }
-    })  
-   }
-    	const updateBlog = useMutation(BlogService.updateBlog, {
-		onSuccess: (result) => {
-			setSnack({
-				isOpen: true,
-				message: 'Blog updated successfully',
-				severity: 'success',
-			})
-		},
-		onError: (err) => {
-			errorPopupParser(err, setSnack)
-		},
-	})
+    const [isPublish, setIsPublish] = useState<publishBlog>()
+    const handleChange = (data: any) => {
+        updateBlog.mutate({
+            blogId: data.id,
+            blog: {
+                isDraft: !data.value
+            }
+        })
+    }
+
+    const updateBlog = useMutation(BlogService.updateBlog, {
+        onSuccess: (result) => {
+            setSnack({
+                isOpen: true,
+                message: 'Blog updated successfully',
+                severity: 'success',
+            })
+        },
+        onError: (err) => {
+            errorPopupParser(err, setSnack)
+        },
+    })
 
     return (
 
@@ -53,7 +57,7 @@ const BlogCard = ({ blog }: any) => {
                     <p className="font-normal text-bold font-semibold mb-3 h-12"> {blog?.category?.split(",").join(' / ')}</p>
                     <p className="font-normal text-gray-700 mb-3">   {blog.metaDesc}</p>
 
-                    <div className='flex justify-between items-center	'>
+                    <div className='flex justify-between items-end	'>
                         <div>
                             {moment(blog.updatedAt).format("l")}
                             <div className='mt-2'>
@@ -70,7 +74,15 @@ const BlogCard = ({ blog }: any) => {
                                     }}
                                 ><span><EditIcon /></span></Link>
 
-                                <div className='mt-2'><PrevIcon /></div>
+                                {/* <div className='mt-2'>
+                                    <Link className="text-red-base"
+                                        href={{
+                                            pathname: '/blogs/preview/',
+                                            query: { id: blog.id } // the data
+                                        }}
+                                    ><span><PrevIcon /></span></Link>
+
+                                </div> */}
 
                             </div>
                         </div>

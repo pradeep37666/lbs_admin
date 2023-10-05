@@ -16,6 +16,8 @@ export type Blog = {
     image: string
     isDraft?: boolean
     updatedAt?:Date
+    images?: string[]
+    createdAt?:Date
 
 }
 
@@ -23,6 +25,8 @@ type UpdateBlogProps = {
 	blogId: string| string[] | undefined
 	blog: Partial<Blog>
 }
+
+
 
 
 namespace BlogService {

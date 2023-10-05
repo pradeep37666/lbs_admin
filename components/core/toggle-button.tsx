@@ -26,7 +26,7 @@ const ToggleButton = (props:any) => {
         </span>
         <span
           className={`slider mx-2 flex h-6 w-[43px] items-center rounded-full p-0 duration-200 ${
-            isChecked ? 'bg-[#212b36]' : 'bg-[#CCCCCE]'
+            isChecked ? 'bg-[#ac172c]' : 'bg-[#CCCCCE]'
           }`}
         >
           <span

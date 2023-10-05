@@ -5,7 +5,7 @@ import { useAtom } from 'jotai'
 import { blogAtom, snackAtom } from '../../stores/atoms'
 import useDebounce from '../../utils/use-debounce'
 import { useInfiniteQuery } from 'react-query'
-import BlogService from '../../services/blog'
+import BlogService, { Blog } from '../../services/blog'
 import errorPopupParser from '../../utils/error-popup-parser'
 import getItemsFromPagination from '../../utils/get-items-from-pagination'
 import BlogCard from '../../components/cards/blog-card'
@@ -35,18 +35,16 @@ function Blogs() {
 	)
 	const renderItems = () => {
 		if (!blogPaginated) return <div> No Blogs found!</div>
-
-		return getItemsFromPagination(blogPaginated.pages)?.data.map((blog: any, index: number) => {
+		const { data, total } = getItemsFromPagination<Blog>(blogPaginated.pages)
+		return data.map((blog ,index) :JSX.Element => {
 			return (
 				<BlogCard
-					key={index}
+					 key={index}
 					blog={blog}
-					setClickedBlogId={() => {
-					}}
 				/>
 			)
 		})
-	}
+	}	  
 
 	return (
 		<div className='w-full h-full select-none'>
@@ -55,7 +53,7 @@ function Blogs() {
 				{renderItems()}
 			</div>
 
-			<div className="group fixed top-0 right-0 p-2  flex items-end justify-end w-400 h-24 cursor-pointer " onClick={()=> router.push('/blogs/create-edit')}>
+			<div className="group fixed top-5 right-20 p-2  flex items-end justify-end w-400 h-24 cursor-pointer " onClick={()=> router.push('/blogs/create-edit')}>
 				<div className="bg-red-base text-white shadow-xl flex items-center gap-2  p-3 rounded-full z-50   w-400 ">
 					<BlogsIcon color='#FFF' />
 					<div className='font-semibold'>Create Blog</div>

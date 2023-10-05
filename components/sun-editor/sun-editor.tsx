@@ -26,6 +26,7 @@ export default function SunEditorComponent({setFieldValue,content}:Editor) {
                 onChange={(text) => {
                     setFieldValue('contentBody',text)
                 }}
+                setDefaultStyle="font-family: DM Sans; font-size: 16px;"
                 setOptions={{
                     maxWidth: '800px',
                     minWidth: '400px',
@@ -33,9 +34,11 @@ export default function SunEditorComponent({setFieldValue,content}:Editor) {
                     maxHeight: "600px",
                     videoWidth: '80%',
                     font: [
+                        "DM Sans",
                         "Arial",
                         "Comic Sans MS",
                         "Courier New",
+                        
                         // Add other fonts here
                     ],
                     buttonList: [

@@ -13,6 +13,7 @@ module.exports = {
 			},
 			fontFamily: {
 				dmSans: ['DM Sans', 'sans-serif'],
+				KameronSans: ['Kameron', 'sans-serif'],
 			},
 			colors: {
 				white: '#FFF',

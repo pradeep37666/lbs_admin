@@ -14,6 +14,8 @@ import { snackAtom } from '../../../stores/atoms'
 import errorPopupParser from '../../../utils/error-popup-parser'
 import getImage from '../../../utils/getImage'
 import { FileService } from '../../../utils/uploadImage'
+import PrevIcon from '../../../assets/icons/prevIcon.'
+import BlogPreviewModel from '../../../components/modals/blog-preview-model'
 const SunEditorComponent = dynamic(() => import('../../../components/sun-editor/sun-editor'), { ssr: false })
 
 function BlogEditor() {
@@ -24,6 +26,7 @@ function BlogEditor() {
 	// const debouncedKeyword = useDebounce(keyword, 600)
 	const [imageBlobUrl, setImageBlobUrl] = useState('')
 	const [imageFile, setImageFile] = useState('')
+	const [preview,setPreview] = useState<boolean>(false)
 	// const [blog,setBlog] = useState<any>({})
 
 	const { data: blog, isLoading, isFetched } = useQuery(['singleBlog', id], () => BlogService.getBlog(id?.toString()), {
@@ -114,6 +117,7 @@ function BlogEditor() {
 		<div className='w-full h-full select-none overflow-hidden'>
 			<p className='text-blue-dark h-[45px] text-[30px] font-bold mb-4'>Blogs</p>
 			<div className='w-full h-[calc(100%_-_65px)] flex gap-4'>
+				<BlogPreviewModel values={values} isOpen={preview} onClose={()=>setPreview(false)}  />
 				<div>
 					<form>
 						<div className='flex gap-16 justify-center '>
@@ -180,10 +184,13 @@ function BlogEditor() {
 								{!isLoading && isFetched && getSuneditor(blog?.contentBody || values.contentBody)}
 							</div>
 						</div>
-						<div className='flex  justify-center mt-8'>
-							<div className='w-[340px] '>
-								<Button text={!id ?'Create Blog' :'Update Blog'} onClick={handleSubmit} className='mb-8' type='submit' />
-							</div>
+						<div className='flex  justify-center mt-8 gap-5'>
+						
+								<Button icon={<PrevIcon />} text="Preview" onClick={()=>{setPreview(true)}} className='mb-8 py-2 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark' />
+							
+							
+								<Button text={!id ?'Create Blog' :'Update Blog'} onClick={handleSubmit} className='mb-8 py-2 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark' type='submit' />
+							
 
 						</div>
 					</form>

@@ -17,8 +17,9 @@ function Button({ text, onClick, className, icon, isLoading, type }: Props): JSX
 				<Spinner />
 			) : (
 				<>
+				{icon && <i>{icon}</i>}
 					{text}
-					{icon && <i>{icon}</i>}
+					
 				</>
 			)}
 		</button>
