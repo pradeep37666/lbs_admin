@@ -1,5 +1,6 @@
 import { atom } from 'jotai'
-import { Admin, Snack ,Blog } from '../types/types'
+import { Admin, Snack  } from '../types/types'
+import { Blog } from '../services/blog'
 
 const defaultSnack: Snack = {
 	isOpen: false,
