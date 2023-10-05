@@ -18,7 +18,7 @@ function BlogPreviewModel({ isOpen, onClose, values }: Props) {
 	}
 	return (
 		<ModalWrapper isOpen={isOpen} onClose={onClose}>
-			<div onClick={(e) => e.stopPropagation()} className='rounded-lg w-1/2 max-h-[80%]'>
+			<div onClick={(e) => e.stopPropagation()} className='rounded-lg w-3/4 max-h-[80%] z-50'>
 				{renderTicketDetails()}
 			</div>
 		</ModalWrapper>

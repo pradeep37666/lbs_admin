@@ -1,76 +1,102 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 *,
 *:before,
 *:after {
-	box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 @layer components {
-	.btn-primary {
-		@apply bg-red-base text-white text-[15px] rounded-[10px] p-4 w-full mb-1 transition-all flex gap-2 justify-center cursor-pointer hover:scale-105 duration-300 hover:bg-red-base hover:shadow-lg;
-	  }
-	
-	  .input-primary {
-		@apply border-[1px] border-red-base font-medium text-black p-3 rounded-lg mb-1 w-full outline-none focus:border-red-dark focus:shadow-md transition-all duration-300;
-	  }
-	
-	  .search-primary {
-		@apply font-medium pl-10 text-[14px] bg-grey-light text-black p-3 rounded-md mb-1 w-full outline-none focus:shadow-md transition-all duration-300;
-	  }
-	
-	  .sidebar-text {
-		@apply relative z-20 cursor-pointer text-blue-dark
-	  }
-	
-	  .sidebar-hover-bg {
-		@apply hover:before:w-full hover:before:px-2 before:-z-10 before:absolute before:content-[''] before:left-[-10px] before:rounded-lg before:w-0 before:h-full before:bg-red-light before:before:-z-10 before:transition-all before:duration-[0.4s]
-	  }
+  .btn-primary {
+    @apply bg-red-base text-white text-[15px] rounded-[10px] p-4 w-full mb-1 transition-all flex gap-2 justify-center cursor-pointer hover:scale-105 duration-300 hover:bg-red-base hover:shadow-lg;
+  }
 
-	  .btn-white {
-		@apply py-1 rounded-md text-blue-dark bg-white border-blue-dark border-2 font-bold w-fit hover:bg-white
-	  }
+  .input-primary {
+    @apply border-[1px] border-red-base font-medium text-black p-3 rounded-lg mb-1 w-full outline-none focus:border-red-dark focus:shadow-md transition-all duration-300;
+  }
 
-	  .btn-blue {
-		@apply py-1 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark
-	  }
-	  
+  .search-primary {
+    @apply font-medium pl-10 text-[14px] bg-grey-light text-black p-3 rounded-md mb-1 w-full outline-none focus:shadow-md transition-all duration-300;
+  }
+
+  .sidebar-text {
+    @apply relative z-20 cursor-pointer text-blue-dark;
+  }
+
+  .sidebar-hover-bg {
+    @apply hover:before:w-full hover:before:px-2 before:-z-10 before:absolute before:content-[''] before:left-[-10px] before:rounded-lg before:w-0 before:h-full before:bg-red-light before:before:-z-10 before:transition-all before:duration-[0.4s];
+  }
+
+  .btn-white {
+    @apply py-1 rounded-md text-blue-dark bg-white border-blue-dark border-2 font-bold w-fit hover:bg-white;
+  }
+
+  .btn-blue {
+    @apply py-1 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark;
+  }
 }
 
 body {
-	margin: 0;
-	font-size: 18px;
-	font-family: 'DM Sans', sans-serif;
+  margin: 0;
+  font-size: 18px;
+  font-family: "DM Sans", sans-serif;
 }
 
 .hide-scroll::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 button {
-	outline: none;
+  outline: none;
 }
 
 button:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 ::-webkit-scrollbar {
-	width: 8px;
-	height: 10px;
+  width: 8px;
+  height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	background: #c2c9d2;
+  border-radius: 10px;
+  background: #c2c9d2;
 }
 
+.blog-content-div ul {
+  padding-left: 18px;
+}
+
+.blog-content-div ul {
+  display: block;
+  list-style: disc;
+  list-style-position: inside;
+}
+
+.blog-content-div ol {
+  padding-left: 25px;
+}
+
+.blog-content-div ol li {
+  list-style: decimal;
+  list-style-position: outside;
+}
+
+.se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable {
+  max-height: 350px !important;
+}
+
+.content-set a {
+  color: #b4132e;
+  text-decoration: underline;
+}

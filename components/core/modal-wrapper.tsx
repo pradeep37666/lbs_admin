@@ -24,7 +24,7 @@ function ModalWrapper({ isOpen, onClose, children }: ModalProps) {
 		<div
 			className={`${
 				isOpen ? 'ease-in duration-200 opacity-100' : 'ease-out duration-300 opacity-0 pointer-events-none'
-			} fixed inset-0 bg-[#10182033] transition-opacity h-screen w-full z-10 top-0 ease-in-out duration-500`}
+			} fixed inset-0 bg-[#10182033] transition-opacity h-screen w-full z-50 top-0 ease-in-out duration-500`}
 			onClick={onClose}
 		>
 			<div

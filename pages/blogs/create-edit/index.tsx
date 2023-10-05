@@ -26,7 +26,7 @@ function BlogEditor() {
 	// const debouncedKeyword = useDebounce(keyword, 600)
 	const [imageBlobUrl, setImageBlobUrl] = useState('')
 	const [imageFile, setImageFile] = useState('')
-	const [preview,setPreview] = useState<boolean>(false)
+	const [preview, setPreview] = useState<boolean>(false)
 	// const [blog,setBlog] = useState<any>({})
 
 	const { data: blog, isLoading, isFetched } = useQuery(['singleBlog', id], () => BlogService.getBlog(id?.toString()), {
@@ -44,7 +44,7 @@ function BlogEditor() {
 		},
 		enableReinitialize: true,
 		onSubmit: (values) => {
-			if(!id){
+			if (!id) {
 				postBlog.mutate({
 					image: values.image,
 					category: values.category,
@@ -57,8 +57,8 @@ function BlogEditor() {
 			}
 			else {
 				updateBlog.mutate({
-					blogId : id ,
-					blog : {
+					blogId: id,
+					blog: {
 						image: values.image,
 						category: values.category,
 						metaTitle: values.metaTitle,
@@ -69,7 +69,7 @@ function BlogEditor() {
 					}
 				})
 			}
-			
+
 		},
 	})
 
@@ -95,7 +95,7 @@ function BlogEditor() {
 				severity: 'success',
 			})
 			router.push('/blogs')
-			
+
 		},
 		onError: (err) => {
 			errorPopupParser(err, setSnack)
@@ -114,10 +114,10 @@ function BlogEditor() {
 		return <SunEditorComponent content={value} setFieldValue={setFieldValue} />
 	}
 	return (
-		<div className='w-full h-full select-none overflow-hidden'>
+		<div className='w-full h-full select-none'>
 			<p className='text-blue-dark h-[45px] text-[30px] font-bold mb-4'>Blogs</p>
 			<div className='w-full h-[calc(100%_-_65px)] flex gap-4'>
-				<BlogPreviewModel values={values} isOpen={preview} onClose={()=>setPreview(false)}  />
+				<BlogPreviewModel values={values} isOpen={preview} onClose={() => setPreview(false)} />
 				<div>
 					<form>
 						<div className='flex gap-16 justify-center '>
@@ -185,13 +185,8 @@ function BlogEditor() {
 							</div>
 						</div>
 						<div className='flex  justify-center mt-8 gap-5'>
-						
-								<Button icon={<PrevIcon />} text="Preview" onClick={()=>{setPreview(true)}} className='mb-8 py-2 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark' />
-							
-							
-								<Button text={!id ?'Create Blog' :'Update Blog'} onClick={handleSubmit} className='mb-8 py-2 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark' type='submit' />
-							
-
+							<Button icon={<PrevIcon />} text="Preview" onClick={() => { setPreview(true) }} className='mb-8 py-2 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark' />
+							<Button text={!id ? 'Create Blog' : 'Update Blog'} onClick={handleSubmit} className='mb-8 py-2 rounded-md text-white bg-blue-dark border-blue-dark border-2 font-bold w-fit hover:bg-blue-dark' type='submit' />
 						</div>
 					</form>
 				</div>
