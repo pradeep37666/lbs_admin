@@ -50,7 +50,7 @@ const BlogCard = ({ blog }: Props) => {
             <div className="bg-white shadow-md rounded-lg max-w-sm mb-5 relative">
                 <div className=" rounded-t-lg h-200  w-400 ">
                     {/* <Image src={getImage(blog.image)} width={400} height={200} className='rounded-sm w-[60px] h-[60px]' alt='' /> */}
-                    <img src={getImage(blog.image)} className='rounded-sm w-[400px] h-[200px] object-contain' alt='' />
+                    <img src={getImage(blog.image)} className='rounded-sm w-[400px] h-[200px] object-cover' alt='' />
                     {/* <Image className="w-full h-full " src={getImage(blog.image)} alt="" width={400} height={200}  objectFit='cover' /> */}
                 </div>
                 <div className="p-5">

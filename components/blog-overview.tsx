@@ -26,7 +26,7 @@ function BlogOverview({ isModal, resetTicket, values }: Props) {
 				} bg-white border-[1px] border-grey-border rounded-xl flex-grow h-full overflow-auto hide-scroll p-4 flex flex-col`}
 		>
 			<div className="blog-content-div overflow-y-auto">
-				<div className="relative">
+				<div className="relative text-center justify-center flex items-center">
 					{/* <Image
 						src={getItemImage(values.image)}
 						width={1200}
@@ -36,10 +36,10 @@ function BlogOverview({ isModal, resetTicket, values }: Props) {
 					/> */}
 					<img
 						src={getItemImage(values.image)}
-						className="object-contain h-[800px] w-full"
-						alt=""
+						className="m-auto max-w-full"
+						alt="" style={{'maxHeight': "700px", 'overflow': "hidden"}}
 					/>
-					<h2 className="absolute text-white drop-shadow-lg text-6xl bottom-8">{values.bannerTitle}</h2>
+					<h2 className="absolute text-white drop-shadow-lg text-6xl m-auto">{values.bannerTitle}</h2>
 				</div>
 				<div className="pt-10 content-set">
 					<h3 className="text-3xl text-black font-bold text-center">{values.contentTitle}</h3>
