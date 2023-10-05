@@ -11,4 +11,4 @@ const defaultSnack: Snack = {
 export const snackAtom = atom<Snack>(defaultSnack)
 
 export const adminAtom = atom<Admin | undefined>(undefined)
-export const blogAtom = atom<Blog | undefined>(undefined)
+export const blogAtom = atom<Blog | undefined>(undefined) 
