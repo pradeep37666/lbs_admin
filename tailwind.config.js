@@ -9,7 +9,7 @@ module.exports = {
 	theme: {
 		extend: {
 			backgroundImage: {
-				'nav-bg': "url('./assets/images/nav-bg.png')",
+				'nav-bg': "url('assets/images/nav-bg.png')",
 			},
 			fontFamily: {
 				dmSans: ['DM Sans', 'sans-serif'],
