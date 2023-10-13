@@ -9,7 +9,7 @@ module.exports = {
 	theme: {
 		extend: {
 			backgroundImage: {
-				'nav-bg': "url('assets/images/nav-bg.png')",
+				'nav-bg': "url('https://dev.littlebigsocial.com/file-uploads?key=other/6dbecb70-6998-11ee-b3dd-59e7033885e9.png')",
 			},
 			fontFamily: {
 				dmSans: ['DM Sans', 'sans-serif'],
