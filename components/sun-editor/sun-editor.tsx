@@ -2,6 +2,8 @@ import { useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css";
+import { FileService } from "../../utils/uploadImage";
+import getImage from "../../utils/getImage";
 
 const SunEditor = dynamic(() => import("suneditor-react"), {
     ssr: false
@@ -12,15 +14,34 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
 }
 
 export default function SunEditorComponent({setFieldValue,content}:Editor) {
-    // const [content, setContent] = useState("");
-    // console.log("--content-",content);
     
-
+    const onImageUploadBefore =() => {
+        return ( files: File[],
+            _info: any,
+             uploadHandler:any) => {
+          (async () => {
+            const fileLink = await FileService.uploadSingleImage(files[0])
+            const res = {
+              result: [
+                {
+                  url:  getImage(fileLink),
+                  name: "thumbnail",
+                },
+              ],
+            };
     
-
+           return uploadHandler(res);
+          })();
+    
+          // called here for stop double image
+         return  uploadHandler();
+        };
+      }
+    
     return (
         <div>
             <SunEditor
+             onImageUploadBefore={onImageUploadBefore()}
                 name="content"
                 defaultValue={content}
                 onChange={(text) => {
@@ -67,6 +88,7 @@ export default function SunEditorComponent({setFieldValue,content}:Editor) {
                         ]
                     ]
                 }}
+                
                 
             />
         </div>
